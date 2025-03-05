@@ -1,0 +1,78 @@
+@charset "utf-8";
+/* CSS Document */
+@page {
+	size: 138mm, 210mm;
+	margin: 2mm;
+}
+
+@font-face {
+	font-family: Calibri;
+	src: url(calibri.ttf);
+}
+
+* {
+	margin: 0mm;
+	font-size:12px;
+	line-height:10px;
+}
+
+body {font-family:"Calibri"; margin:5px; width:140mm;}
+
+a {color:#000; text-decoration:none; font-size:12px;}
+
+a:visited {color:#000; text-decoration:none;}
+
+p, td, th {
+	font-size:12px;
+}
+
+#wrapper { width: 138mm;
+border: 0px solid #0F0;
+margin:2px;
+padding-top:5px;
+background-color: #FFF;
+float: left;
+page-break-after:always;
+}
+
+table, th {
+	border:0px solid #000;
+	font-size:11px;
+	line-height:12px;
+}
+
+td{border-left:0px solid #000; border-right:0px solid #000; font-size:11px; padding:2px; line-height:12px; word-wrap:break-word;}
+
+th{word-wrap:break-word; border: 1px solid;}
+
+#company_info{border: 0px solid #F00; height: 20mm;}
+
+#company {margin-top:5px; margin-bottom:0px; padding:0px; width:60%; line-height:12px; font-size:20px; font-weight:bold; font-stretch:extra-expanded; float:left;}
+
+#slogan {font-size:14px; line-height:10px; width:100%;margin-left:20px;}
+
+#logo {float:left; margin-right: 5px; margin-bottom: 5px; font-size:14px; font-weight:bold; font-stretch:extra-expanded;}
+#logo img{height: 10px; margin-right: 5px;}
+
+#dealer {float:left; border-top:3px solid; padding-top:2px;}
+#dealer img {height:10px; margin:0 auto;}
+
+#address{width:35%; margin-top:0px; font-size:10px; line-height:10px; float:right;}
+
+#invoice {width:100%; float:left; margin-top:0px;}
+
+#bill_detail{border: 0px solid #F00;}
+
+#party {float:left; font-size:12px;margin-left:0px; width:40%; line-height:12px;border:0px solid;}
+#party b {font-weight:bold; font-size:12px;}
+
+#bill {float:left; width:100%; margin-top:0px; font-size:13px; border:0px solid;}
+
+#invoiceno{float:right; margin-left:0px;text-align:left; border:0px solid;}
+#invoiceno table {float:right;}
+
+#noborder td {border:1px solid; text-align:left; font-size:12px; line-height:6px;}
+
+#terms {font-size:9px;float:left; line-height:6px;}
+
+#align_right{text-align:right; padding-right:5px; border-left:1px solid;}

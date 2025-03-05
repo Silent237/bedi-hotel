@@ -1,0 +1,154 @@
+#left_container{
+	width: 300px;
+	float: left;
+}
+#left_div{
+	height:450px;
+	width:300px;
+	border: 0px solid;
+	overflow:scroll;
+	float: left;
+}
+
+#total_show{
+  	border:0px solid;
+	text-align: center;
+}
+
+#total_show button{
+	border: none;
+	outline: none;
+	background:#D5F9F6;
+	color:black;
+	padding: 10px;
+	width: 100%;
+}
+
+#left_div button{
+	height: 25px;
+	width: 25px;
+	font-size: 16px;
+	font-weight: bold;
+	box-shadow: 1px 1px 1px 1px;
+}
+
+#left_div img{
+	height: 25px;
+}
+
+#item_list{
+	height: 454px;
+	width:560px;
+	border: 0px solid #0f0;
+	float: left;
+	padding-top: 10px;
+}
+
+#inside_item{
+	height: 434px;
+	width:100%;
+	border: 0px solid #000000;
+	float: left;
+}
+
+#search_box{
+	width: 98%;
+	background: #cccccc;
+	font-size: 18px;
+	padding: 5px;
+	margin-bottom: 10px;
+}
+
+#search_box input{
+	width: 98%;
+	height: 25px;
+}
+
+#display_box{
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 300px;
+}
+
+#div_button{
+	width: 99%;
+	float: left;
+	border: 2px solid blue;
+	margin-left: 1px;
+}
+
+#div_button button{
+	background-color:#cccccc;
+	box-shadow: 1px 1px #666666;
+	border-radius: 8px;
+
+}
+
+#category_item{
+	width: 300px;
+	float: left;
+	border: 1px solid #00f;
+	height: 495px;
+
+}
+
+#category_list{
+	height: 480px;
+	float:left;
+	width: 100%;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+
+#category_item button{
+	height:50px;
+	width:130px;
+	margin: 5px;
+	border-radius: 5px;
+}
+
+#item_container{
+	margin: 10px;
+	display:inline-block;
+	cursor: pointer;
+}
+#item_list #item_container div{
+	height:50px;
+	width:115px;
+	margin-left: 5px;
+	border-radius: 5px;
+	background: #eee;
+	text-align: center;
+	display: table-cell;
+	border: 0px solid;
+	vertical-align: middle;
+	font-size: 14px;
+	box-shadow: 2px 1px;
+}
+
+#item_list #item_container div:active{background: #FFD600;}
+
+#item_list button{
+	height:50px;
+	width:120px;
+	margin-left: 10px;
+	border-radius: 5px;
+}
+
+
+#nav{
+	float:left;
+	width: 100%;
+	border: 0px solid;
+}
+
+#category_item #nav button{
+	margin: 5px;
+	padding: 0px;
+	width: 100px;
+	background-color:#cccccc;
+	box-shadow: 1px 1px #666666;
+	border-radius: 8px;
+
+}

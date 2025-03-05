@@ -1,0 +1,91 @@
+@charset "utf-8";
+/* CSS Document */
+@page {
+	margin-top: 5mm;
+	margin-left: 2mm;
+	size: 210mm, 280mm;
+}
+
+@media print
+{    
+    .no-print
+    {
+        display: none !important;
+    }
+	.print-only{
+		display: block;
+	}
+}
+
+@media screen{
+	.print-only{display:none;}
+}
+
+
+* {
+	margin: 1mm;
+	margin-top:5px;
+	font-size:14px;
+	line-height:14px;
+}
+
+body {font-family:"Myriad Web Pro";}
+
+a {color:#000; text-decoration:none; font-size:18px;}
+
+a:visited {color:#000; text-decoration:none;}
+
+p, td, th {
+	font-size:14px;
+}
+
+#wrapper { 
+	width: 200mm;
+	margin:auto;
+	padding-top:5px;
+	background-color: #FFF;
+	border: 1px solid;
+	box-sizing: border-box;
+
+}
+
+table, th {
+	border:0px solid #000;
+	font-size:14px;
+	line-height:20px;
+}
+td{border-left:0px solid #000; border-right:0px solid #000; padding:5px; font-size: 14px;}
+
+h1{font-size: 26px; line-height: 30px;}
+h2{font-size: 20px; line-height: 24px;}
+h3{font-size: 16px; line-height: 20px;}
+
+table.td-center td{text-align: center;}
+
+#company {margin-top:5px; margin-bottom:0px; padding:0px; width:600px; line-height:40px; font-size:40px; font-weight:bold; font-stretch:extra-expanded; float:left;}
+
+#slogan {font-size:14px; line-height:16px; width:400px;margin-left:80px;}
+
+#logo {float:left;}
+
+#dealer {float:left; border-top:3px solid; padding-top:2px;}
+#dealer img {height:30px; margin:0 auto;}
+
+#address{width:300px; margin-top:25px; font-size:14px; line-height:15px; float:right;}
+
+
+#invoice {width:1020px; float:left; margin-top:20px;}
+
+#party {float:left; font-size:22px;margin-left:10px; width:400px; line-height:26px;}
+#party b {font-weight:bold; font-size:22px;}
+
+#bill {float:left; width:100%; margin-top:10px; font-size:14px;}
+
+#invoiceno{float:right; margin-left:10px;text-align:left;}
+#invoiceno table {float:right; width:400px;}
+
+#noborder td {border:none; text-align:left; font-size:15px; line-height:10px; width:300px; border:1px solid;}
+
+#terms {font-size:10px;float:left;}
+
+#bottom{position: absolute; bottom: 20px; width: 200mm;}
