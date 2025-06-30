@@ -77,12 +77,15 @@ $("input#cust_name").on("keydown.autocomplete", function() {
                     </select></td>
                 </tr>
             	<tr class="no-print">
-                	<th colspan="3">
+                	<th colspan="2">
                     	<input type="submit" name="submit_form" value="Search with Filters" class="btTxt submit">
                     </th>
-                    <th colspan="3">
+                    <th colspan="2">
                     	<input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
                     </th>
+					<th colspan="2">
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
                 </tr>
             </table>	
 		</form>
@@ -153,6 +156,16 @@ $("input#cust_name").on("keydown.autocomplete", function() {
 </table>
 		
 </div>
+
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('report_form');
+    form.action = 'payment_report_export.php';
+    form.submit();
+    return false;
+}
+</script>
 <?php
 
 page_footer();

@@ -87,14 +87,18 @@ $("input#cust_name1").on("keydown.autocomplete", function() {
                 	</td>
                 </tr>
             	<tr class="no-print">
-                	<th colspan="3">
+                	<th >
                     	<input type="submit" name="submit_form" value="Search with Filters" class="btTxt submit">
                     </th>
-                    <th colspan="3">
+                    <th >
                     	<input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
                     </th>
+					<th colspan="2">
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
                 </tr>
             </table>
+			</form>
 		<table>
 			<tr>
 				<th>S.No.</th>
@@ -297,7 +301,7 @@ $("input#cust_name1").on("keydown.autocomplete", function() {
 				<th><?php echo $credit_all; ?></th>
 			</tr>
 		</table>			
-
+</div>
 <script>
 $(function () {
 	$("td.editable").dblclick(function (e) {
@@ -367,4 +371,13 @@ function edit_remark(id){
 	});
 
 }	
+</script>
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('report_allotment');
+    form.action = 'creditbill_report_export.php';
+    form.submit();
+    return false;
+}
 </script>

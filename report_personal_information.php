@@ -15,11 +15,7 @@ if(isset($_GET['del_id'])){
 <style>
     .ui-autocomplete-loading { background: white url('images/ui-anim_basic_16x16.gif') right center no-repeat; }
     </style>
-<style type="text/css">
-	td{
-		font-size: 20px;
-	}
-</style>
+
 <script type="text/javascript" language="javascript">
 $(function() {
 	var options = {
@@ -98,12 +94,15 @@ $("input#company_name").on("keydown.autocomplete", function() {
                 	<td><input type="text" name="father_name" id="father_name" value="<?php if(isset($_POST['father_name'])){echo $_POST['father_name'];}?>"></td>
                 </tr>
             	<tr class="no-print">
-                	<th colspan="2">
+                	<th >
                     	<input type="submit" name="submit_form" value="Search with Filters" class="btTxt submit">
                     </th>
-                    <th colspan="2">
+                    <th >
                     	<input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
                     </th>
+					<th colspan="2">
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
                 </tr>
             </table>	
 		</form>
@@ -161,13 +160,23 @@ $("input#company_name").on("keydown.autocomplete", function() {
 					<td>'.$row['district'].'</td>
 					<td>'.$row['state'].'</td>
 					<td>'.$row['reason_for_come'].'</td>';
-					echo '<td class="no-print"><a href="personal_information.php?e_id='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Edit</a></td>';
-					echo '<td class="no-print"><a href="report_personal_information.php?del_id='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Delete</a></td>';
+					echo '<td class="no-print"><a href="personal_information.php?e_id='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-edit"></i></a></td>';
+					echo '<td class="no-print"><a href="report_personal_information.php?del_id='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-trash-alt" style="color:red;"></i></a></td>';
 					echo '</tr>';
 				}
 ?>
 </table>
 </div>
+
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('report_form');
+    form.action = 'prsinfo_report_export.php';
+    form.submit();
+    return false;
+}
+</script>
 <?php
 navigation('');
 page_footer();

@@ -52,16 +52,13 @@ if(isset($_GET['del'])){
 				<tr>
 					<td>Category</td>
 					<td><input id="category" name="category" value="<?php if(isset($row['room_type'])){echo $row['room_type'];}?>" class="field text medium" maxlength="255" tabindex="1" type="text" /></td>
-				</tr>
-				<tr>
+				
 					<td>Rent</td>
 					<td><input id="rent" name="rent" value="<?php if(isset($row['rent'])){echo $row['rent'];}?>" class="field text medium" maxlength="255" tabindex="1" type="text" />
-				</tr>
-				<tr>
+				
 					<td>No. of Rooms</td>
 					<td><input id="remarks" name="remarks" value="<?php if(isset($row['remarks'])){echo $row['remarks'];}?>" class="field text medium" maxlength="255" tabindex="1" type="text" />
-				</tr>
-				<tr>
+			
 					<td colspan="2"><input type="hidden" name="room_sno" value="<?php if(isset($_GET['id'])){echo $_GET['id'];}?>" />
 					<input id="submit" name="submit" class="btTxt submit" type="submit" value="Add/Update Room Category" onMouseDown="" tabindex="23"></td>
 				</tr>
@@ -92,8 +89,8 @@ if(isset($_GET['del'])){
 			<td>'.$row['room_type'].'</td>
 			<td>'.$row['rent'].'</td>
 			<td>'.$row['remarks'].'</td>
-			<td><a href="admin_room_types.php?id='.$row['sno'].'">Edit</a></td>
-			<td><a href="admin_room_types.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Delete</a></td>
+			<td><a href="admin_room_types.php?id='.$row['sno'].'"><i class="fas fa-edit"></i></a></td>
+			<td><a href="admin_room_types.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-trash-alt" style="color:red;"></i></a></td>
 			</tr>';
 		}
 ?>

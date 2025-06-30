@@ -125,8 +125,8 @@ page_header();
 			                           	 <td>'.$row['remark'].'</td>
 			                           	 <td>'.$row['account'].'</td>';
 			                           	 echo'<td><a href="">View</a></td>
-			                           	 <td><a href="receipt.php?edit1='.$row["sno"].'">Edit</a></td>
-			                           	 <td><a href="receipt.php?delete1='.$row["sno"].'">Delete</a></td></tr>';
+			                           	 <td><a href="receipt.php?edit1='.$row["sno"].'"><i class="fas fa-edit"></i></a></td>
+			                           	 <td><a href="receipt.php?delete1='.$row["sno"].'"><i class="fas fa-trash-alt" style="color:red;"></i></a></td></tr>';
 			                           	 $sno++;
 			                           	
 

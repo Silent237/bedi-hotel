@@ -205,14 +205,14 @@ $("input#supplier").on("keydown.autocomplete", function() {
     		<td><?php echo $row['grand_total']; ?></td>
     		<td><a href="report_banquet_hall.php?detail=<?php echo $row['sno']; ?>">Detail</a></td>
     		<td><a href="print_ban.php?id=<?php echo $row['sno']; ?>" target="_blank">Print</a></td>
-            <td><a href="banquet_hall.php?e_id=<?php echo $row['sno']; ?>" target="_blank">Edit</a></td>
-            <td><a href="report_banquet_hall.php?del=<?php echo $row['sno']; ?>" onClick="return confirm(\'Are you sure?\');">Delete</a></td>
+            <td><a href="banquet_hall.php?e_id=<?php echo $row['sno']; ?>" target="_blank"><i class="fas fa-edit"></i></a></td>
+            <td><a href="report_banquet_hall.php?del=<?php echo $row['sno']; ?>" onClick="return confirm(\'Are you sure?\');"><i class="fas fa-trash-alt" style="color:red;"></i></a></td>
     	</tr>
     			<?php
-                $amount += $row['amount'];
-                $sgst += $row['sgst'];
-                $cgst += $row['cgst'];
-                $grand_total += $row['grand_total']; 
+                $amount += intval($row['amount']);
+                $sgst += intval($row['sgst']);
+                $cgst += intval($row['cgst']);
+                $grand_total += intval($row['grand_total']); 
     		}
     	?>
         <tr>

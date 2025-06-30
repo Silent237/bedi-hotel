@@ -228,6 +228,9 @@ $("input#cust_name1").on("keydown.autocomplete", function() {
                     	<input type="submit" name="submit_form" value="Search with Filters" class="btTxt submit">
                     	<input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
                     	<input type="submit" name="einv_form" value="Generate E-Invoice" class="btTxt submit">
+						
+                
+            
                     </th>
                 </tr>
             </table>
@@ -518,9 +521,9 @@ $("input#cust_name1").on("keydown.autocomplete", function() {
 						echo $row_mop['mop'];
 					}
 					echo '</span></td>';
-					echo '<td class="no-print"><a href="print.php?id='.$row['sno'].'" target="_blank">View</a></td>
+					echo '<td class="no-print"><a href="print.php?id='.$row['sno'].'" target="_blank"><i class="fas fa-eye"></i></a></td>
 					<td class="no-print"><a href="report_allotment.php?cancel='.$row['sno'].'">'.$cancel_display.'</a></td>
-					<td class="no-print"><a href="allotment2.php?id='.$row['sno'].'" target="_blank">Edit</a></td>
+					<td class="no-print"><a href="allotment2.php?id='.$row['sno'].'" target="_blank"><i class="fas fa-edit"></i></a></td>
 					<td class="no-print"'; if($num_modified_bill>0){echo 'style="background-color:red;"';}echo '><a href="allotment.php?aid='.$row['sno'].'" target="_blank"></a></td>';
 					if($row['id_2']!=''){
 						echo '<td class="no-print"><input type="checkbox" name="einv_'.$row['sno'].'" value="'.$row['sno'].'"></td>';	

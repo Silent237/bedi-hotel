@@ -1,6 +1,7 @@
 <?php
 session_cache_limiter('nocache');
 session_start();
+
 include ("scripts/settings.php");
 	logvalidate($_SESSION['username'], $_SERVER['SCRIPT_FILENAME']);
 	logvalidate('admin');
@@ -54,6 +55,8 @@ if(isset($_GET['del']))
 			
 }
 ?>
+
+
 <script type="text/javascript" language="javascript" src="form_validator.js"></script>
  <div id="container">
         <h2>Add New Floor</h2>	
@@ -64,19 +67,19 @@ if(isset($_GET['del']))
 					<td>Floor Name</td>
 					<td><input id="floor_name" name="floor_name" value="<?php if(isset($row['floor_name'])){echo $row['floor_name'];}?>" class="field text medium" maxlength="255" tabindex="1" type="text" />
 					<input id="floor_sno" name="floor_sno" type="hidden"></td>
-				</tr>
-				<tr>
+
 					<td>No. Of Rooms</td>
 					<td><input id="no_of_rooms" name="no_of_rooms" value="<?php if(isset($row['no_of_rooms'])){echo $row['no_of_rooms'];}?>" class="field text medium" maxlength="255" tabindex="1" type="text" />
-				</tr>
-				<tr>
-					<td>Remarks</td>
-					<td><input id="remarks" name="remarks" value="<?php if(isset($row['remarks'])){echo $row['remarks'];}?>" class="field text medium" maxlength="255" tabindex="1" type="text" />
-				</tr>
-				<tr>
+
 					<td colspan="2"><input type="hidden" name="floor_sno" value="<?php if(isset($_GET['id'])){echo $_GET['id'];}?>" />
 					<input id="submit" name="submit" class="btTxt submit" type="submit" value="Add/Update Floor" onMouseDown="" tabindex="23"></td>
 				</tr>
+				
+				<!-- <tr>
+					<td>Remarks</td>
+					<td><input id="remarks" name="remarks" value="<?php if(isset($row['remarks'])){echo $row['remarks'];}?>" class="field text medium" maxlength="255" tabindex="1" type="text" />
+				</tr> -->
+				
 			</table>
 		</form>
 		<table width="100%">
@@ -105,8 +108,11 @@ if(isset($_GET['del']))
 		<td>'.$row['floor_name'].'</td>
 		<td>'.$row['no_of_rooms'].'</td>
 		<td>'.$row['remarks'].'</td>
-		<td><a href="admin_floors.php?id='.$row['sno'].'">Edit</a></td>
-		<td><a href="admin_floors.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Delete</a></td>
+		<td><a href="admin_floors.php?id='.$row['sno'].'"><i class="fas fa-edit"></i></a></td>
+<td><a href="admin_floors.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-trash-alt" style="color:red;"></i></a></td>
+
+
+
 		</tr>';
 	}
 ?>

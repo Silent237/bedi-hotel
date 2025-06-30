@@ -797,7 +797,7 @@ $(function() {
 		elseif($row['purpose'] == "banquet_rent"){
 			echo '<td><a href="banquet_hall.php?allot='.$row['sno'].'">Allot Banquet</a></td>';
 		}		
-		echo '<td><a href="res_advance_booking.php?e_id='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Edit</a></td>
+		echo '<td><a href="res_advance_booking.php?e_id='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-edit"></i></a></td>
 	</tr>';
 	}
 }

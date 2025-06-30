@@ -75,14 +75,18 @@ if(isset($_GET['cancel'])){
                     </th>
                 </tr>
             	<tr class="no-print">
-                	<th colspan="3">
+                	<th colspan="2">
                     	<input type="submit" name="submit_form" value="Search with Filters" class="btTxt submit">
                     </th>
-                    <th colspan="3">
+                    <th colspan="2">
                   <input type="submit"  value="Reset Filters" class="btTxt submit" onclick="myFunction()">
                     </th>
+					<th colspan="2">
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
                 </tr>
             </table>
+	</form>
 		<table>
 			<tr>
 				<th>S.No</th>
@@ -214,4 +218,13 @@ function myFunction() {
 
 }
 
+</script>
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('report_allotment');
+    form.action = 'kot_report_export.php';
+    form.submit();
+    return false;
+}
 </script>

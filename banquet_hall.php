@@ -1,5 +1,6 @@
 <?php
 session_cache_limiter('nocache');
+session_start();
 include ("scripts/settings.php");
 logvalidate($_SESSION['username'], $_SERVER['SCRIPT_FILENAME']);
 logvalidate('admin');
@@ -8,19 +9,18 @@ $msg='';
 date_default_timezone_set('Asia/Calcutta');
 page_header();
 $tab=1;
-$con = $db;
+$con = connect();
 $ban_id = '';
 if(isset($_GET['allot'])){
 	$sql = 'select * from advance_booking where sno='.$_GET['allot'];
-
-	$result= execute_query($sql);
-	$row_allot= mysqli_fetch_assoc($result);
-	
+//	echo $sql;
+	$stmt=connect()->prepare($sql);
+	$stmt->execute();
+	$row_allot=$stmt->fetch();
 	$sql='select * from customer where sno='.$row_allot['cust_id'];
-	
-	$result= execute_query($sql);
-	$customer_allot= mysqli_fetch_assoc($result);
-	
+	$stmt=connect()->prepare($sql);
+	$stmt->execute();
+	$customer_allot=$stmt->fetch();
 	$sql_advance_amount = 'SELECT SUM(`amount`) as advance_amount FROM `customer_transactions` WHERE `cust_id`="'.$row_allot['cust_id'].'" AND `type`="ADVANCE_AMT" AND `payment_for`="banquet_rent"';
 	$row_advance_amount = mysqli_fetch_array(execute_query($sql_advance_amount));
 	$sql_advance_paid = 'SELECT SUM(`amount`) as advance_paid FROM `customer_transactions` WHERE `cust_id`="'.$row_allot['cust_id'].'" AND `type`="ADVANCE_PAID" AND `payment_for`="banquet_rent"';
@@ -44,17 +44,22 @@ if(isset($_POST['submit'])){
 	}
 	if($msg==''){
 		if($_POST['cust_sno']==''){
-			$sql= 'INSERT INTO customer (company_name, cust_name, mobile, id_1, id_2, address, created_by, created_on , state) VALUES ("'.$_POST['company_name'].'", "'.$_POST['cust_name1'].'", "'.$_POST['mobile'].'", "'.$_POST['id_1'].'", "'.$_POST['id_2'].'", "'.$_POST['address'].'", "'.$_SESSION['username'].'" ,CURRENT_TIMESTAMP , "UTTAR PRADESH")';
-			$result = execute_query($sql);
+			$stmt= $con->prepare('INSERT INTO customer (company_name, cust_name, mobile, id_1, id_2, address, created_by, created_on , state, zipcode) VALUES ("'.$_POST['company_name'].'", "'.$_POST['cust_name1'].'", "'.$_POST['mobile'].'", "'.$_POST['id_1'].'", "'.$_POST['id_2'].'", "'.$_POST['address'].'", "'.$_SESSION['username'].'" ,CURRENT_TIMESTAMP , "UTTAR PRADESH", "'.$_POST['zipcode'].'")');
+		
+			$stmt->execute();
 			$msg .= '<li class="error">Customer Added successfully</li>';
-			$_POST['cust_sno'] = $con->insert_id;		
+			$_POST['cust_sno'] = $con->lastInsertId();		
 		}
 		if($_POST['cust_sno']!=''){
 			$sql='update customer set 
 			cust_name = "'.$_POST['cust_name1'].'" ,
-			company_name = "'.$_POST['company_name'].'"
+			company_name = "'.$_POST['company_name'].'",
+			zipcode = "'.$_POST['zipcode'].'"
 			where sno='.$_POST['cust_sno'];
-			$result = execute_query($sql);
+			//echo $sql;
+			//die();
+			$stmt=connect()->prepare($sql);
+			$stmt->execute();
 		}
 		if($_POST['cust_sno']!=''){
 			if($_POST['edit_sno'] != ''){
@@ -117,11 +122,10 @@ if(isset($_POST['submit'])){
 				$result_invoice = execute_query($sql_invoice);
 				$row_invoice = mysqli_fetch_array($result_invoice);
 				$invoice_no = $row_invoice['invoice_no']+1;
-				$sql ='INSERT INTO `banquet_hall`(`cust_id`, `invoice_no`, `hall_type`, `check_in_date`, `booking_date` , `remarks`, `created_by`, `created_on`, `amount`, `cgst`, `sgst`, `grand_total`, `mop` , `financial_year` , `total_quantity` , `advance_booking_id`) VALUES ("'.$_POST['cust_sno'].'" , "'.$invoice_no.'" , "'.$_POST['hall_type'].'" , "'.$_POST['check_in_date'].'" , "'.$_POST['booking_date'].'" , "'.$_POST['remarks'].'" , "'.$_SESSION['username'].'" , "'.date('Y-m-d H:i').'" , "'.$_POST['amount'].'" , "'.$_POST['cgst'].'" , "'.$_POST['sgst'].'" , "'.$_POST['grand_total'].'" , "'.$_POST['mop'].'" , "'.$year.'" , "'.$_POST['quantity'].'" , "'.$_POST['allot_sno'].'")';
-				$res = execute_query($sql);
+				$sql = $con->prepare('INSERT INTO `banquet_hall`(`cust_id`, `invoice_no`, `hall_type`, `check_in_date`, `booking_date` , `remarks`, `created_by`, `created_on`, `amount`, `cgst`, `sgst`, `grand_total`, `mop` , `financial_year` , `total_quantity` , `advance_booking_id`) VALUES ("'.$_POST['cust_sno'].'" , "'.$invoice_no.'" , "'.$_POST['hall_type'].'" , "'.$_POST['check_in_date'].'" , "'.$_POST['booking_date'].'" , "'.$_POST['remarks'].'" , "'.$_SESSION['username'].'" , "'.date('Y-m-d H:i').'" , "'.$_POST['amount'].'" , "'.$_POST['cgst'].'" , "'.$_POST['sgst'].'" , "'.$_POST['grand_total'].'" , "'.$_POST['mop'].'" , "'.$year.'" , "'.$_POST['quantity'].'" , "'.$_POST['allot_sno'].'")');
+				$res = $sql->execute();
 				if($res){
-					$ban_id =mysqli_insert_id($db);
-					// $ban_id = $con->lastInsertId();
+					$ban_id = $con->lastInsertId();
 					$sql_trans = 'INSERT INTO customer_transactions (cust_id, allotment_id , type , timestamp, amount, mop, created_by , created_on , remarks,invoice_no,financial_year ,advance_set_amt) VALUES ("'.$_POST['cust_sno'].'", "'.$ban_id.'", "BAN_AMT" , "'.date('Y-m-d').'"  , "'.$_POST['grand_total'].'" , "'.$_POST['mop'].'", "'.$_SESSION['username'].'" ,CURRENT_TIMESTAMP, "'.$_POST['remarks'].'","'.$invoice_no.'","2020-2021","'.$_POST['advance_amount_paid'].'")';
 					execute_query($sql_trans);
 					$msg .= '<li class="error">Data Inserted &nbsp; <a href="print_ban.php?id='.$ban_id.'" target="_blank">Print</a></li>';
@@ -131,7 +135,9 @@ if(isset($_POST['submit'])){
 						$inv_no = mysqli_fetch_array($inv_result);
 				    	$set_sno = $inv_no['sno'];
 						$sql='INSERT INTO customer_transactions (cust_id , type , timestamp, amount, mop, created_by , created_on , remarks , invoice_no , financial_year , payment_for,set_sno) VALUES ("'.$_POST['cust_sno'].'", "ADVANCE_PAID" , "'.date('Y-m-d').'"  , "'.$_POST['advance_amount_paid'].'" , "cash", "'.$_SESSION['username'].'" ,CURRENT_TIMESTAMP, "'.$_POST['remarks'].'","","'.$year.'" , "banquet_rent" , "'.$set_sno.'")';
-						$result = execute_query($sql);
+								//echo $sql;
+						$stmt=connect()->prepare($sql);
+						$stmt->execute();
 						$sql_inv = 'select * from customer_transactions order by abs(sno) desc limit 1';
 						$inv_result = execute_query($sql_inv);
 						$inv_no = mysqli_fetch_array($inv_result);
@@ -151,7 +157,9 @@ if(isset($_POST['submit'])){
 				}
 				if($_POST['allot_sno'] != ''){
 			    	$sql='update advance_booking set status="1" where sno="'.$_POST['allot_sno'].'" or advance_for_id="'.$_POST['allot_sno'].'"';
-					$result = execute_query($sql);
+					//echo $sql;
+					$stmt=connect()->prepare($sql);
+					$stmt->execute();
 			    }
 			}
 		}
@@ -232,25 +240,25 @@ $("input#company_name").on("keydown.autocomplete", function() {
 		<form action="banquet_hall.php" class="wufoo leftLabel page1"  name="addnewdesignation" enctype="multipart/form-data" method="post" onSubmit="" >
 			<table>
 				<tr>
-					<td>Guest Name : </td><td><input id="cust_name1" name="cust_name1" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" value="<?php if(isset($_GET['e_id'])){echo $row_customer_edit['cust_name'];}elseif(isset($_GET['allot'])){echo $customer_allot['cust_name'];} ?>"> &nbsp; <a href="admin_customers.php?id=<?php echo $row_customer_edit['sno']; ?>">Edit</a></td>
-					<td>Mobile : </td>
+					<td>Guest Name</td><td><input id="cust_name1" name="cust_name1" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" value="<?php if(isset($_GET['e_id'])){echo $row_customer_edit['cust_name'];}elseif(isset($_GET['allot'])){echo $customer_allot['cust_name'];} ?>"> &nbsp; <a href="admin_customers.php?id=<?php echo $row_customer_edit['sno']; ?>">Edit</a></td>
+					<td>Mobile</td>
 					<td><input id="mobile" name="mobile" value="<?php if(isset($_GET['e_id'])){echo $row_customer_edit['mobile'];}elseif(isset($_GET['allot'])){echo $customer_allot['mobile'];} ?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" /></td>
 				</tr>
 				<input type="hidden" name="cust_sno" id="cust_sno" value="<?php if(isset($_GET['e_id'])){echo $row_customer_edit['sno'];}elseif(isset($_GET['allot'])){echo $customer_allot['sno'];} ?>" />
 				<tr>
-					<td>Company Name : </td>
+					<td>Company Name</td>
 					<td><input id="company_name" name="company_name" value="<?php if(isset($_GET['e_id'])){echo $row_customer_edit['company_name'];}elseif(isset($_GET['allot'])){echo $customer_allot['company_name'];} ?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" /></td>	
-					<td>SAC/HSN : </td>
+					<td>SAC/HSN</td>
 					<td><input id="id_1" name="id_1" value="<?php if(isset($_GET['e_id'])){echo $row_customer_edit['id_1'];}elseif(isset($_GET['allot'])){echo $customer_allot['id_1'];} ?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" /></td>
 				</tr>
 				<tr>
-					<td>Address : </td>
+					<td>Address</td>
 					<td><input id="address" name="address" value="<?php if(isset($_GET['e_id'])){echo $row_customer_edit['address'];}elseif(isset($_GET['allot'])){echo $customer_allot['address'];} ?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" /></td>
-					<td>GSTIN : </td>
+					<td>GSTIN</td>
 					<td><input id="id_2" name="id_2" value="<?php if(isset($_GET['e_id'])){echo $row_customer_edit['id_2'];}elseif(isset($_GET['allot'])){echo $customer_allot['id_2'];} ?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" /></td>
 				</tr>
 				<tr>
-					<td>Hall Type : </td>
+					<td>Hall Type</td>
 					<td>
 						<select name="hall_type" tabindex="<?php echo $tab++;?>">
 							<option value="">Select</option>
@@ -265,30 +273,31 @@ $("input#company_name").on("keydown.autocomplete", function() {
 							?>
 						</select>
 					</td>
-					<td>Remarks : </td>
+					<td>Remarks</td>
 					<td>
 						<input id="remarks" name="remarks" value="<?php if(isset($_GET['e_id'])){echo $row_banquet_edit['remarks'];} ?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" />
 					</td>
 				</tr>
 				<tr>
-					<td>Booking Date : </td>
+					<td>Booking Date</td>
 					<td><input name="booking_date" type="text" value="<?php if(isset($_GET['e_id'])){echo $row_banquet_edit['booking_date'];}elseif(isset($_GET['allot'])){echo $row_allot['booking_date'];} ?>" class="field text medium" tabindex="<?php echo $tab++;?>" id="booking_date" /></td>
-					<td colspan="2">&nbsp;</td>
+					<td>PIN Code</td>
+					<td><input name="zipcode" type="text" value="<?php if(isset($_GET['e_id'])){echo $row_customer_edit['zipcode'];}elseif(isset($_GET['allot'])){echo $customer_allot['zipcode'];} ?>" class="field text medium" tabindex="<?php echo $tab++;?>" id="zipcode" /></td>
 				</tr>
 				<tr>
-					<td>Event Date : </td>
+					<td>Event Date</td>
 					<td><input name="check_in_date" type="text" value="<?php if(isset($_GET['e_id'])){echo $row_banquet_edit['check_in_date'];}elseif(isset($_GET['allot'])){echo $row_allot['allotment_date'];} ?>" class="field text medium" tabindex="<?php echo $tab++;?>" id="check_in_date" required/></td>
-					<td>Total Amount : </td>
+					<td>Total Amount</td>
 					<td><input type="text" name="total_amount" id="total_amount" readonly></td>
 				</tr>
 				<tr>
-					<td>Advance Amount : </td>
+					<td>Advance Amount</td>
 					<td><input type="<?php if(isset($_GET['e_id'])){echo 'hidden';}else{echo 'text';} ?>" name="advance_amount" id="advance_amount" readonly value="<?php if(isset($_GET['allot'])){echo $advance_amount;}else{echo 0;} ?>"></td>
-					<td>Advance Amount Paid : </td>
+					<td>Advance Amount Paid</td>
 					<td><input type="<?php if(isset($_GET['e_id'])){echo 'hidden';}else{echo 'text';} ?>" name="advance_amount_paid" id="advance_amount_paid" onblur="amount_validation();" value="0"></td>
 				</tr>	
 				<tr>
-					<td>MOP : </td>
+					<td>MOP</td>
 					<td>
 						<select name="mop" tabindex="<?php echo $tab++;?>" tabindex="<?php echo $tab++;?>">
 							<option value="cash" <?php if(isset($_GET['e_id'])){if($row_banquet_edit['mop'] == 'cash'){echo 'selected';}} ?>>cash</option>
@@ -296,7 +305,7 @@ $("input#company_name").on("keydown.autocomplete", function() {
 							<option value="credit" <?php if(isset($_GET['e_id'])){if($row_banquet_edit['mop'] == 'credit'){echo 'selected';}} ?>>credit</option>
 						</select>
 					</td>
-					<td>Payable Amount : </td>
+					<td>Payable Amount</td>
 					<td><input type="text" name="payable_amount" id="payable_amount"></td>
 				</tr>		
 			</table>
@@ -399,7 +408,7 @@ $("input#company_name").on("keydown.autocomplete", function() {
 				<td colspan="8">
 					<input type="hidden" name="allot_sno" id="allot_sno" value="<?php if(isset($_GET['allot'])){echo $_GET['allot'];}?>" />
 				<input type="hidden" name="edit_sno" value="<?php if(isset($_GET['e_id'])){echo $_GET['e_id'];} ?>">
-				<input id="submit" name="submit" class="btTxt submit large" type="submit" value="Submit" onMouseDown="" ></td>
+				<input id="submit" name="submit" class="btTxt submit" type="submit" value="Submit" onMouseDown="" ></td>
 			</tr>
 		</table>
 	</form>
@@ -429,7 +438,6 @@ $('#check_out_date').datetimepicker({
 	});
 </script>
 <?php
-navigation('');
 page_footer();
 ?>
 <script type="text/javascript">

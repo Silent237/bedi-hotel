@@ -111,20 +111,18 @@ if(isset($_GET['style'])){
 		<title>SALE INVOICE</title>
 	</head>
 	<body>
-		<div id="wrapper">
+		<div id="wrapper" style="width:200px;">
 			<table border="0" bordercolor="#ccc" cellpadding="0" cellspacing="0" width="100%" >
 				<tr>
 					<td><center><p style="font-size:14px; "><?php if($invoice['invoice_type']=='SALE'){echo "INVOICE";}elseif($invoice['invoice_type']=='TAX'){echo "INVOICE";}else{echo "";}?></p></center></td>
 				</tr>
 				<tr>
-					<td><h1 style="font-size:20px;">FIRE BIRD CAFE AND LOUNGE</h1><h1 style="font-size:17px;">(A Unit Of Better And Better)</h1></td>
+					<td><h1 style="font-size:20px;"><?php echo $company; ?></h1><h1 style="font-size:17px;"><?php echo $slogan; ?></h1></td>
 				</tr>
 				<tr>
 					<td>
-						<p style="font-size:14px;letter-spacing: 1px">3rd Floor Hotel Prakash Inn,</p>
-						<p style="font-size:14px;letter-spacing: 1px">B3/14, Vinay Khand-3, Gomti </p>
-						<p style="font-size:14px;letter-spacing: 1px">Nagar, Lucknow</p>
-						<p style="font-size:14px;letter-spacing: 1px">Pincode - 226010</p>
+						
+						<p style="font-size:14px;letter-spacing: 1px"><?php echo $address; ?></p>
 						<p style="font-size:14px;letter-spacing: 1px"><?php
 							if($gstin!=''){
 								echo "<br/><strong style='font-size:14px;letter-spacing: 1px'>GSTIN : 09AAZFB2216Q1ZP</strong>";

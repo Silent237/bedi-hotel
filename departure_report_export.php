@@ -28,7 +28,7 @@ if(isset($_SESSION['sql5'])){
 				$result=execute_query($sql);
 
 				$i=1;
-			$occcu='';
+			$occcu=0;
 			foreach($result as $row){
 						if($i%2==0){
 							$col = '#CCC';
@@ -89,7 +89,7 @@ if(isset($_SESSION['sql5'])){
 				
 			</tr>'
 			;
-			   $occcu +=$row['occupancy'];
+			   $occcu +=intval($row['occupancy']);
 			}
 			$html .='<tr style="background:'.$col.';border:1px solid black">
 			<td></td>

@@ -866,10 +866,10 @@ if(isset($_GET['style'])){
 				<div id="company">
 					<div id="company" style="margin-top:10px">
 					    <img src="../images/a2.png" height="100px;" width="100px;" style="position:relative;top:10px;left:0;right:0;margin:0 auto; object-fit:cover;" />
-					<div id="logo"><h1 style="font-size:24px;margin-top:10px; line-height:25px;">BEDI'S DREAM LAND HOTEL AND RESORT</h1><br><br><h4 style="font-size:12px;letter-spacing:2px"></b></h4></div>
+					<div id="logo"><h1 style="font-size:24px;margin-top:10px; line-height:25px;"><?php echo $company; ?></h1><br><br><h4 style="font-size:12px;letter-spacing:2px"></b></h4></div>
 				</div>
 				<div id="address" style="margin-top:4px">
-				<p style="font-size:16px;letter-spacing: 1px; margin-bottom:3px; line-height:18px;">Maheshpur, Near Saryu Bridge <br>Ayodhya-224001 (U.P)</p>
+				<p style="font-size:16px;letter-spacing: 1px; margin-bottom:3px; line-height:18px;"><?php echo $address; ?></p>
 				<p style="font-size:16px;letter-spacing: 1px; margin-bottom:3px;"> </p>
 				<p style="font-size:16px;letter-spacing: 1px"></p>
 			</div>
@@ -878,8 +878,8 @@ if(isset($_GET['style'])){
 			</div>
 			<div id="address" style="margin-top:10px">
 				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;"></p>
-				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">Contact No: +91 8989441919, +91 8400334035/34</p>
-				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">E-Mail :bedisdreamland@gmail.com, Website: www.bedisdreamland.com</p>
+				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;"><?php echo $contact; ?></p>
+				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">E-Mail :<?php echo $email; ?>, Website: <?php echo $web; ?></p>
 			</div>
 			<div id="address" style="margin-top:10px">
 				
@@ -1292,21 +1292,21 @@ if(isset($_GET['style'])){
 				<center><p style="font-size:14px; text-decoration: underline;"><?php if($invoice['invoice_type']=='SALE'){echo "INVOICE";}elseif($invoice['invoice_type']=='TAX'){echo "INVOICE";}else{echo "";}?></p></center>
 				<div id="company">
 					<div id="company" style="margin-top:10px">
-					<div id="logo"><h1 style="font-size:22px;">BEDI'S DREAM LAND HOTEL AND RESORT</h1></div>
+					<div id="logo"><h1 style="font-size:22px;"><?php echo $company; ?></h1></div>
 				</div>
-				<<div id="address" style="margin-top:10px">
-				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">Pincode - 224001</p>
-				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">Contact No: 02578-316015 +91 9335452112, +91 7755004900</p>
-				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">E-Mail : hotelrajpalace.biz@gmail.com, Website: www.hotelrajpalace.biz</p>
+				<div id="address" style="margin-top:10px">
+				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;"><?php echo $address; ?></p>
+				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;"><?php echo $contact; ?></p>
+				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">E-Mail : <?php echo $email; ?>, Website: <?php echo $web; ?></p>
 			</div>
 			</div>
 			<div id="address" style="margin-top:4px">
 				<p style="font-size:15px;letter-spacing: 1px"></p>
 			</div>
 			<div id="address" style="margin-top:10px">
-				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">Pincode - 224001</p>
-				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">Contact No: +91 - 7393957373</p>
-				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">Email ID: tipsytown2023@gmail.com</p>
+				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;"><?php echo $address; ?></p>
+				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;"><?php echo $contact; ?></p>
+				<p style="font-size:15px;letter-spacing: 1px;line-height:16px;">E-Mail : <?php echo $email; ?>, Website: <?php echo $web; ?></p>
 			</div>
 			<table width="100%">
 				<tr>

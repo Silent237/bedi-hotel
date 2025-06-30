@@ -419,10 +419,10 @@ function edit_mode_of_payment(id){
 				$kotrow=mysqli_fetch_array($res);
 				echo'<td>'.$kotrow['kot_no'].'</td>';
 				echo '<td>'.$row['invoice_no'].'</td>
-				<td class="no-print"><a href="dine_in_order.php?edit_id='.$row['sno'].'" target="_blank">Edit</a></td>
-				<td class="no-print"><a href="scripts/printing_sale_restaurant.php?inv='.$row['sno'].'" target="_blank">View</a></td>
+				<td class="no-print"><a href="dine_in_order.php?edit_id='.$row['sno'].'" target="_blank"><i class="fas fa-edit"></i></a></td>
+				<td class="no-print"><a href="scripts/printing_sale_restaurant.php?inv='.$row['sno'].'" target="_blank"><i class="fas fa-eye"></i></a></td>
 				<td class="no-print"><a href="dine_in_order_copy.php?edit_id='.$row['sno'].'" target="_blank">Bill Edit</a></td>
-				<td class="no-print"><a href="report_sale_restaurant.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><img src="images/del.png" height="20"></a></td>
+				<td class="no-print"><a href="report_sale_restaurant.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-trash-alt" style="color:red;"></i></a></td>
 			</tr>';
 			$tot_qty += $row['quantity'];
 			$tot_amount += $row['grand_total'];

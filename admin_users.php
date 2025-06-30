@@ -46,24 +46,20 @@ if(isset($_POST['submit'])){
                 	<tr>
                     	<td>User ID : </td>
                         <td><input id="user_id" name="user_id"  class="fieldtextmedium" maxlength="25" tabindex="<?php echo $tab++; ?>" type="text"/></td>
-                    </tr>
-                    <tr>	
+                 
                     	<td>User Password : </td>
                         <td><input id="user_pass" name="user_pass"  class="fieldtextmedium" maxlength="25" tabindex="<?php echo $tab++; ?>" type="text"/></td>
-                    </tr>
-                    <tr>
+                    
                     	<td>User Name : </td>
                         <td><input id="user_name" name="user_name"  class="fieldtextmedium" maxlength="25" tabindex="<?php echo $tab++; ?>" type="text"/></td>
                     </tr>
                     <tr>
                     	<td>Father Name : </td>
                         <td><input id="father_name" name="father_name"  class="fieldtextmedium" maxlength="25" tabindex="<?php echo $tab++; ?>" type="text"/></td>
-                    </tr>
-                    <tr>
+                   
                     	<td>Address : </td>
                         <td><input id="address" name="address"  class="fieldtextmedium" maxlength="25" tabindex="<?php echo $tab++; ?>" type="text"/></td>
-                    </tr>
-                    <tr>
+                    
                     	<td>Mobile : </td>
                         <td><input id="mobile" name="mobile"  class="fieldtextmedium" maxlength="25" tabindex="<?php echo $tab++; ?>" type="text"/></td>
                     </tr>

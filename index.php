@@ -58,6 +58,7 @@ if(isset($_POST['submit'])) {
 if(!isset($_SESSION['session_id'])) {
 	page_struct();
 ?>	
+
 <div class="full_container">
   <div class="form_title">
     <div class="card-header">
@@ -89,17 +90,28 @@ if(!isset($_SESSION['session_id'])) {
 <?php 
 }
 else {
-$sql = "SELECT COUNT(*) as total_rows FROM advance_booking WHERE DATE(check_in) = '" . date('Y-m-d') . "'";
+
+$sql = "SELECT number_of_room FROM advance_booking WHERE DATE(check_in) = '" . date('Y-m-d') . "' and status=0";
+	$result = execute_query( $sql);
+	
+	$advCheckin = 0;
+	
+	while ($row = mysqli_fetch_assoc($result)) {
+		$numbers = explode(',', $row['number_of_room']); // Split CSV values
+		$advCheckin += array_sum(array_map('intval', $numbers)); // Convert to int and sum
+	}
+
+$sql = "SELECT COUNT(*) as total_rows FROM allotment WHERE DATE(allotment_date) = '" . date('Y-m-d') . "'";
 $result = $db->query($sql);
 $row = $result->fetch_assoc();
 $totalCheckin = $row['total_rows'];
 
-$sql = "SELECT COUNT(*) as total_rows1 FROM advance_booking WHERE DATE(check_out) = '" . date('Y-m-d') . "'";
+$sql = "SELECT COUNT(*) as total_rows1 FROM allotment WHERE DATE(exit_date) = '" . date('Y-m-d') . "'";
 $result = $db->query($sql);
 $row = $result->fetch_assoc();
 $totalCheckout = $row['total_rows1'];
 
-$sql = 'SELECT COUNT(*) as room_rows FROM room_master';
+$sql = 'SELECT COUNT(*) as room_rows FROM room_master where room_status=1';
 $result = $db->query($sql);
 $row = $result->fetch_assoc();
 $totalRoom = $row['room_rows'];
@@ -145,81 +157,156 @@ page_header();
 //title_bar();
 ?>
 <div class="dashboard">
-<div class="box bg-warning">
-	<div class="num">
-	<span id="count"><?php echo $totalRoom; ?></span><img src="images/bed.png" alt="hotel Image">
-	</div>	
-	<p>Total Rooms</p>
-	</div>
-	<div class="box bg-success">
+	<div class="box bg-warning" data-type="total_rooms">
 		<div class="num">
-	 <span id="count"><?php echo $totalCheckin; ?></span> <i style="color:white; margin:10px 10px 10px 0px;font-size:40px;" class="fa fa-2x fa-userfa-solid fa-person-walking-dashed-line-arrow-right"></i> <!--<img src="images/check-in.png" alt="hotel Image" > -->
-	</div>
-		<p>Total Check In</p>
-	</div>
-	<div class="box bg-danger">
-		<div class="num">
-	<span id="count"><?php echo $totalCheckout; ?></span><i style="color:white; margin:10px 10px 10px 0px;font-size:40px;"  class="fa-solid fa-2x fa-person-walking-luggage"></i> <!--<img src="images/checkout.png" alt="hotel Image" > -->
-	</div>
-		<p>Total Check Out</p>
-	</div>
-	<div class="box" style="background-color:#e67d21;">
-	<div class="num">
-	<span id="count"><?php echo $avroom; ?></span><img src="images/signal.png" alt="hotel Image">
-	</div>	
-	<p>Available Rooms</p>
-	</div>
-	<!-- <div class="box" id="box3">
-	<div class="num">
-	<span id="count"><?php echo $totalitem; ?></span><img src="images/reception.png" alt="hotel Image" >
-	</div>	
-	<p>Total Food-Item</p>
+			<span id="count"><?php echo $totalRoom; ?></span><img src="images/bed.png" alt="hotel Image">
+		</div>	
+		<p>Total Rooms</p>
 	</div>
 
-	<div class="box">
-	<div class="num">
-	<span id="count"><?php echo $roomservice; ?></span><img src="images/hotel-service.png" alt="hotel Image">
-	</div>	
-	<p>Total Rooms Services</p>
-	</div>
-	
-	<div class="box" id="box1">
+	<div class="box" style="background-color:#e67d21;" data-type="available_rooms">
 		<div class="num">
-	<span id="count"><?php echo $totaltable; ?></span><img src="images/restaurant.png" alt="hotel Image" >
+			<span id="count"><?php echo $avroom; ?></span><img src="images/signal.png" alt="hotel Image">
+		</div>	
+		<p>Available Rooms</p>
 	</div>
+
+	<div class="box bg-success" data-type="total_checkin">
+		<div class="num">
+			<span id="count"><?php echo $totalCheckin; ?></span>
+			<i style="color:white; margin:10px 10px 10px 0px;font-size:40px;" class="fa fa-2x fa-userfa-solid fa-person-walking-dashed-line-arrow-right"></i>
+		</div>
+		<p>Total Check In</p>
+	</div>
+
+	<div class="box bg-danger" data-type="total_checkout">
+		<div class="num">
+			<span id="count"><?php echo $totalCheckout; ?></span>
+			<i style="color:white; margin:10px 10px 10px 0px;font-size:40px;" class="fa-solid fa-2x fa-person-walking-luggage"></i>
+		</div>
+		<p>Total Check Out</p>
+	</div>
+
+	<div class="box" id="box3" data-type="advance_checkin">
+		<div class="num">
+			<span id="count"><?php echo $advCheckin; ?></span><img src="images/reception.png" alt="hotel Image" >
+		</div>	
+		<p>Today Advance Check In</p>
+	</div>
+
+	<div class="box" data-type="running_services">
+		<div class="num">
+			<span id="count"><?php echo $roomservice; ?></span><img src="images/hotel-service.png" alt="hotel Image">
+		</div>	
+		<p>Running Rooms Services</p>
+	</div>
+
+	<div class="box" id="box1" data-type="total_tables">
+		<div class="num">
+			<span id="count"><?php echo $totaltable; ?></span><img src="images/restaurant.png" alt="hotel Image" >
+		</div>
 		<p>Total Tables</p>
 	</div>
-	<div class="box" style="background-color:#2196f3;">
+
+	<div class="box" style="background-color:#2196f3;" data-type="running_tables">
 		<div class="num">
-	<span id="count"><?php echo $totaltable-$availtable; ?></span><img src="images/restaurant.png" alt="hotel Image" >
-	</div>
-		<p>Available Tables</p>
-	</div> -->
-	
-	<!-- <div class="box" id="box3">
-	<div class="num">
-	<span id="count"><?php echo $totalwaiter; ?></span><img src="images/waiter.png" alt="hotel Image" >
+			<span id="count"><?php echo $availtable; ?></span><img src="images/restaurant.png" alt="hotel Image" >
+		</div>
+		<p>Running Tables</p>
 	</div>	
-	<p>Waiters</p>
-	</div> -->
-	
 </div>
 
 
+<!-- Modal HTML -->
+<div id="reportModal" class="modal" style="display:none;">
+	<div class="modal-content" style="padding:20px; max-width: 90%; margin: auto; background:#f7f3f3; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2);">
+		<span class="close" style="float:right; font-size: 24px; cursor: pointer;">&times;</span>
+		<div id="modalBody">Loading...</div>
+	</div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function () {
+	$('.box').on('click', function () {
+		let type = $(this).data('type');
+
+		// Show modal and loading state
+		$('#modalBody').html('Loading...');
+		$('#reportModal').fadeIn();
+
+		// AJAX request
+		$.ajax({
+			url: 'fetch_report.php', // 🔁 Your backend file
+			type: 'POST',
+			data: { report_type: type },
+			success: function (data) {
+				$('#modalBody').html(data); // Inject response
+			},
+			error: function () {
+				$('#modalBody').html('<p style="color:red;">Failed to load report.</p>');
+			}
+		});
+	});
+
+	// Close modal
+	$('.close').on('click', function () {
+		$('#reportModal').fadeOut();
+	});
+
+	// Close when clicking outside modal content
+	$(window).on('click', function (e) {
+		if ($(e.target).is('#reportModal')) {
+			$('#reportModal').fadeOut();
+		}
+	});
+});
+</script>
+
+
+
+
 <?php
-//  $dataPoints = array();
-//  while($row = $result->fetch_assoc()) {
-// 	$dataPoints[] = array("y" => $row['y'], "label" => $row['label']);
-// }
-$dataPoints = array( 
-	array("y" => 3373.64, "label" => "January" ),
-	array("y" => 2435.94, "label" => "February" ),
-	array("y" => 1842.55, "label" => "March" ),
-	array("y" => 1828.55, "label" => "April" ),
-	array("y" => 1039.99, "label" => "May" ),
-	array("y" => 765.215, "label" => "June" ),
-	array("y" => 612.453, "label" => "July" )
+
+$sql = "SELECT 
+    MONTH(allotment_date) AS month,
+    SUM(total_amount) AS total_amount
+FROM 
+    advance_booking
+WHERE 
+    YEAR(allotment_date) = YEAR(CURDATE()) 
+GROUP BY 
+    MONTH(allotment_date)
+ORDER BY 
+    MONTH(allotment_date)";
+
+$res = execute_query($sql);
+
+// Initialize an array with all months set to 0
+$monthNames = array(
+    1 => "January", 2 => "February", 3 => "March", 4 => "April",
+    5 => "May", 6 => "June", 7 => "July", 8 => "August",
+    9 => "September", 10 => "October", 11 => "November", 12 => "December"
 );
+
+$monthlyTotals = array_fill(1, 12, 0);
+
+// Fill in totals from the query
+while ($row = mysqli_fetch_assoc($res)) {
+    $month = (int)$row['month'];
+    $monthlyTotals[$month] = (float)$row['total_amount'];
+}
+
+// Format for chart
+$dataPoints = array();
+foreach ($monthNames as $num => $name) {
+    $dataPoints[] = array("y" => $monthlyTotals[$num], "label" => $name);
+}
+
+// Optional: print for testing
+// print_r($dataPoints);
+
+
  
 ?>
 <!DOCTYPE HTML>
@@ -234,6 +321,11 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	title:{
 		text: "Hotel Revenue"
 	},
+	axisX: {
+		interval: 1,
+		labelAutoFit: false,
+		labelFontSize: 12
+	},
 	axisY: {
 		title: "Hotel Revenue (in thousands)"
 	},
@@ -244,12 +336,13 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	}]
 });
 chart.render();
+
  
 }
 </script>
 </head>
 <body>
-<div id="chartContainer" style="height: 350px; width: 72%;margin:20px 0px 0px 290px;"></div>
+<div id="chartContainer" style="height: 250px; width: 72%;margin:120px 0px 0px 290px;"></div>
 
 </body>
 </html>    

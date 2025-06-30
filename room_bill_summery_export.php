@@ -181,7 +181,7 @@ if(isset($_SESSION['sql_receipt_type'])){
 				if($row['cancel_date']==''){
 					if($row['invoice_type']=='tax'){
 						$tot_tax_discount+=$row['other_discount']*$days;
-						$tot_tax_other_charges+=$row['other_charges']*$days;
+						$tot_tax_other_charges+=intval($row['other_charges'])*intval($days);
 						$tot_tax_original_amount+=$row['original_room_rent']*$days;
 						$tot_tax_amount+=$amount;
 						$tot_tax_tax += $tax*$days;
@@ -203,7 +203,7 @@ if(isset($_SESSION['sql_receipt_type'])){
 					$cancel_display = 'Cancel';
 					
 					$grand_tot_discount+=$row['other_discount']*$days;
-					$grand_tot_other_charges+=$row['other_charges']*$days;
+					$grand_tot_other_charges+=intval($row['other_charges'])*intval($days);
 					$grand_tot_original_amount+=$row['original_room_rent']*$days;
 					$grand_tot_amount+=$amount;
 					$grand_tot_tax += $tax*$days;
@@ -266,7 +266,7 @@ if(isset($_SESSION['sql_receipt_type'])){
 						<td class="number">'.number_format((float)($tax), 2, '.', '').'</td>
 						<td class="number">'.number_format((float)($row['room_rent']), 2, '.', '').'</td>
 						<td class="number">'.number_format((float)($row['original_room_rent']*$days), 2, '.', '').'</td>
-						<td class="number">'.number_format((float)($row['other_charges']*$days), 2, '.', '').'</td>
+						<td class="number">'.number_format((float)(intval($row['other_charges'])*intval($days)), 2, '.', '').'</td>
 						<td class="number">'.number_format((float)(($row['other_discount'])*$days), 2, '.', '').'</td>
 						<td class="number">'.number_format((float)($base_rent*$days), 2, '.', '').'</td>
 						<td class="number">'.number_format((float)($tax*$days), 2, '.', '').'</td>

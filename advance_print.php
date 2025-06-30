@@ -21,6 +21,14 @@ $sql = 'select * from general_settings where `desc`="contact"';
 $contact = mysqli_fetch_assoc(execute_query($sql));
 $contact = $contact['rate'];
 
+$sql = 'select * from general_settings where `desc`="email"';
+$email = mysqli_fetch_assoc(execute_query($sql));
+$email = $email['rate'];
+
+$sql = 'select * from general_settings where `desc`="website"';
+$web = mysqli_fetch_assoc(execute_query($sql));
+$web = $web['rate'];
+
 $sql = 'select * from general_settings where `desc`="gstin"';
 $gstin = mysqli_fetch_assoc(execute_query($sql));
 $gstin = $gstin['rate'];
@@ -168,14 +176,14 @@ $style = 'thermal';
         <img src="images/a2.png" class="company-logo" height="60px" width="60px">
         <div class="header-text">
             <h5>ADVANCE RECEIPT</h5>
-            <h6>BEDI'S DREAM LAND HOTEL AND RESORT</h6>
-            <p>Maheshpur, Near Saryu Bridge, Ayodhya-224001 (U.P)</p>
-            <p>Mob: +91 8989441919, +91 8400334035/34</p>
-            <p>Email: bedisdreamland@gmail.com</p>
-            <p>Website: www.bedisdreamland.com</p>
-            <p>GSTIN: 09AAOFB3645G1ZA</p>
+            <h6><?php echo $company; ?></h6>
+            <p><?php echo $address; ?></p>
+            <p><?php echo $contact; ?></p>
+            <p>Email: <?php echo $email; ?></p>
+            <p>Website: <?php echo $web; ?></p>
+            <p>GSTIN: <?php echo $gstin; ?></p>
         </div>
-
+         <div class="card">
         <table class="table info-table">
             <tr>
                 <th>Guest Name:</th>
@@ -204,8 +212,29 @@ $style = 'thermal';
             <tr>
                 <th>Payment Mode:</th>
                 <td><?php echo strtoupper($row_mop['mop']); ?></td>
-                <th>Room Category:</th>
-                <td>
+                <th>Total Amount:</th>
+            <td><?php echo $invoice['total_amount']; ?></td>
+                
+            </tr>
+            <tr>
+           
+           <th>Advance Amount:</th>
+           <td><?php echo $invoice['advance_amount']; ?></td>
+           
+           <th>Due Amount:</th>
+           <td><?php echo $invoice['due_amount']; ?></td>
+           </tr>
+            
+    </table>
+            </div>
+            <table class="table info-table mt-2">
+                <div class="card mt-2">
+            <th>Room Category:</th>
+                <th>No. Of Rooms:</th>
+                <th>Room Number:</th>
+            </tr>
+            <tr>
+            <td>
                     <?php 
                     $result = mysqli_query($db, $sql_invoice);
                     while ($row = mysqli_fetch_assoc($result)) {
@@ -213,29 +242,18 @@ $style = 'thermal';
                     } 
                     ?>
                 </td>
-            </tr>
-            <tr>
                 <?php if($invoice['number_of_room'] != ''){ ?>
-                <th>No. Of Rooms:</th>
-                <td> <?php echo $invoice['number_of_room']; ?></td>
+                
+                <td> <?php echo str_replace(',', '<br>', $invoice['number_of_room']); ?></td>
                 <?php } ?>
                 <?php if($invoice['room_number'] != ''){ ?>
-                <th>Room Number:</th>
-                <td><?php echo $invoice['room_number']; ?></td>
+                
+                <td><?php echo str_replace(',', '<br>', $invoice['room_number']); ?></td>
                 <?php } ?>
             </tr>
-            <tr>
-            <th>Total Amount:</th>
-            <td><?php echo $invoice['total_amount']; ?></td>
-            <th>Advance Amount:</th>
-            <td><?php echo $invoice['advance_amount']; ?></td>
-            </tr>
-            <tr>
-            <th>Due Amount:</th>
-            <td><?php echo $invoice['due_amount']; ?></td>
-            </tr>
+            </div>
         </table>
-
+        
         <!-- <table class="table amount-table">
             <tr>
                 <th>S.No</th>

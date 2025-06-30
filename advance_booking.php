@@ -940,7 +940,7 @@ if (isset($_GET['del'])) {
 
 		</table>
 	</form>
-	<table width="100%">
+	<!-- <table width="100%">
 		<tr style="background:#000; color:#FFF;">
 			<th>S.No.</th>
 			<th>Guest Name</th>
@@ -1004,7 +1004,7 @@ if (isset($_GET['del'])) {
 			}
 		}
 		?>
-	</table>
+	</table> -->
 </div>
 <script src="js/jquery.datetimepicker.full.js"></script>
 <script language="JavaScript">

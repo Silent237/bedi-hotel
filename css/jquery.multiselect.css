@@ -5,6 +5,7 @@
 
 .ms-options-wrap > button:focus,
 .ms-options-wrap > button {
+    display:none;
     position: relative;
     width: 65%;
     text-align: left;

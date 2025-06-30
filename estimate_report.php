@@ -12,7 +12,7 @@ navigation('');
 	<div id="container">
 			<div id="content">
 				<h2>Estimate Report</h2>
-				<form name="main_form" method="POST" action="estimate_report.php" enctype="multipart/formdata">
+				<form id="report_form" name="main_form" method="POST" action="estimate_report.php" enctype="multipart/form-data">
 					<table width="100%">
 						<tr>
 							<tr style="background:#CCC;">
@@ -67,7 +67,12 @@ navigation('');
 						</tr>
 						
 						<tr>
-							<td colspan="6" style="text-align: center;"><input class="large" type="submit" name="submit" value="Search" tabindex="<?php echo $tabindex++; ?>"></td>
+							<td colspan="3" style="text-align: center;"><input class="large" type="submit" name="search" value="Search" tabindex="<?php echo $tabindex++; ?>">
+</td>
+							<td colspan="3" style="text-align: center;">
+                <input type="button" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="submitExportExcel(event);">
+
+            </td>
 						</tr>
 					
 					</table>			
@@ -90,7 +95,7 @@ navigation('');
 					$tot_taxable_amount=0;
 					$grand_total=0;
 					$sql = 'select * from billing_estimate where 1=1';
-					if(isset($_POST['submit'])){
+					if(isset($_POST['search'])){
 						if($_POST['date_type'] == 'booking_wise'){
 						$sql .= ' and created_on>="'.$_POST['allot_from'].'" and created_on<"'.date("Y-m-d", strtotime($_POST['allot_to'])+86400).'"';
 					}
@@ -134,7 +139,7 @@ navigation('');
 						<td>'.$row['mop'].'</td>
 						<td>'.$row['particular'].'</td>
 						
-						<td><a href="billingestimate.php?edit_id='.$row['sno'].'" target="_blank">Edit</a></td>
+						<td><a href="billingestimate.php?edit_id='.$row['sno'].'" target="_blank"><i class="fas fa-edit"></i></a></td>
 						<td><a href="print_billingestimate.php?id='.$row['sno'].'" target="_blank">Print</a></td>
 					</tr>';
 					$tot_taxable_amount+=floatval($row['total_amount']);
@@ -149,6 +154,16 @@ navigation('');
 				</table>
 			</div>	
 	</div>	
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('report_form');
+    form.action = 'estimate_report_export.php';
+    form.submit();
+    return false;
+}
+</script>
+
 <?php				
 				
 					break;

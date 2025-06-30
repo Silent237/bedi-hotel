@@ -12,9 +12,11 @@ $stamp = $_GET['ts'];
 
 $sql = 'select * from general_settings where `desc`="company"';
 $company = mysqli_fetch_array(execute_query($sql));
+$company=$company['rate'];
 
 $sql = 'select * from general_settings where `desc`="address"';
 $address = mysqli_fetch_array(execute_query($sql));
+$address=$address['rate'];
 
 $sql = 'select * from kitchen_ticket_temp where table_id="'.$table.'" and time_stamp="'.$stamp.'"';
 $result = execute_query($sql);
@@ -70,10 +72,10 @@ echo '
 		<div id="wrapper">
 		<table width="100%" style="font-weight:bold">
 			<tr>
-				<th colspan="4" style="font-size:15px">BEDIS DREAM LAND HOTEL AND RESORT</th>
+				<th colspan="4" style="font-size:15px">'.$company.'</th>
 			</tr>
 			<tr>
-				<th colspan="4" style="font-size:15px">Ayodhya-224001 (U.P)</th>
+				<th colspan="4" style="font-size:15px">'.$address.'</th>
 			</tr>
 			<tr>
 				<th colspan="4" style="font-size:15px">K.O.T.</th>
@@ -90,7 +92,7 @@ echo '
 			else{
 				$room_id = substr($row['table_id'], 5);
 				$sql = 'select * from room_master where sno="'.$room_id.'"';
-				echo $sql;
+				// echo $sql;
 				$room = mysqli_fetch_array(execute_query($sql));
 				echo '<td><b style="font-size:13px">Room :</b></td>
 				<td><b style="font-size:13px">'.$room['room_name'].'</b></td>';
@@ -132,9 +134,11 @@ $stamp = $_GET['ts'];
 
 $sql = 'select * from general_settings where `desc`="company"';
 $company = mysqli_fetch_array(execute_query($sql));
+$company=$company['rate'];
 
 $sql = 'select * from general_settings where `desc`="address"';
 $address = mysqli_fetch_array(execute_query($sql));
+$address=$address['rate'];
 
 $sql = 'select * from kitchen_ticket_temp where table_id="'.$table.'" and time_stamp="'.$stamp.'"';
 $result = execute_query($sql);
@@ -146,10 +150,10 @@ $row = mysqli_fetch_assoc($result);
 echo '<div id="wrapper">
 		<table width="100%" style="font-weight:bold">
 			<tr>
-				<th colspan="4" style="font-size:15px">BEDIS DREAM LAND HOTEL AND RESORT</th>
+				<th colspan="4" style="font-size:15px">'.$company.'</th>
 			</tr>
 			<tr>
-				<th colspan="4" style="font-size:15px">Ayodhya-224001 (U.P)</th>
+				<th colspan="4" style="font-size:15px">'.$address.'</th>
 			</tr>
 			<tr>
 				<th colspan="4" style="font-size:15px">K.O.T.</th>

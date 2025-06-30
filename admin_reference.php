@@ -63,8 +63,8 @@ page_header();
 				<td>'.$i++.'</td>
 				<td>'.$row['name'].'</td>
 				<td>'.$row['mobile'].'</td>
-				<td><a href="admin_reference.php?id='.$row['sno'].'">Edit</a></td>
-				<td><a href="admin_reference.php?delid='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Delete</a></td>
+				<td><a href="admin_reference.php?id='.$row['sno'].'"><i class="fas fa-edit"></i></a></td>
+				<td><a href="admin_reference.php?delid='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-trash-alt" style="color:red;"></i></a></td>
 				</tr>';
             }
             ?>

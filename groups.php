@@ -60,8 +60,8 @@ page_header();
 	            echo '<tr style="background:' . $bg_color . ';">
 				<td>'.$i++.'</td>
 				<td>'.$row['description'].'</td>
-				<td><a href="groups.php?id='.$row['sno'].'">Edit</a></td>
-				<td><a href="groups.php?delid='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Delete</a></td>
+				<td><a href="groups.php?id='.$row['sno'].'"><i class="fas fa-edit"></i></a></td>
+				<td><a href="groups.php?delid='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-trash-alt" style="color:red;"></i></a></td>
 				</tr>';
             }
             ?>

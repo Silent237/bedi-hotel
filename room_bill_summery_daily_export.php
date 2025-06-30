@@ -156,19 +156,20 @@ if(isset($_SESSION['sql_advance'])){
 						}
 						
 						if(strtolower(trim($row['invoice_type']))!='bill_of_supply'){
-							$base_rent = round(($row['original_room_rent']-($row['other_discount']+$row['discount_value'])+$other_charge),2);
+							$base_rent = round(($row['original_room_rent']-(intval($row['other_discount'])+intval($row['discount_value']))+$other_charge),2);
 							$tax = round((($base_rent*$row['tax_rate']/200)),2);
 						}
 						else{
 							$base_rent=$row['room_rent']+$other_charge;
 							$tax=0;
 						}
-						$row['other_discount']+=$row['discount_value'];
+						$row['other_discount'] = intval($row['other_discount']) + intval($row['discount_value']);
+
 						$amount = $row['room_rent']*$days;
 						if($row['cancel_date']==''){
 							if($row['invoice_type']=='tax'){
 								$tot_tax_discount+=$row['other_discount']*$days;
-								$tot_tax_other_charges+=$row['other_charges']*$days;
+								$tot_tax_other_charges+=intval($row['other_charges'])*($days);
 								$tot_tax_original_amount+=$row['original_room_rent']*$days;
 								$tot_tax_amount+=$amount;
 								$tot_tax_tax += $tax*$days;
@@ -178,7 +179,7 @@ if(isset($_SESSION['sql_advance'])){
 							}
 							else{
 								$tot_discount+=$row['other_discount']*$days;
-								$tot_other_charges+=$row['other_charges']*$days;
+								$tot_other_charges+=intval($row['other_charges'])*intval($days);
 								$tot_original_amount+=$row['original_room_rent']*$days;
 								$tot_amount+=$amount;
 								$tot_tax += $tax*$days;
@@ -190,7 +191,7 @@ if(isset($_SESSION['sql_advance'])){
 							$cancel_display = 'Cancel';
 							
 							$grand_tot_discount+=$row['other_discount']*$days;
-							$grand_tot_other_charges+=$row['other_charges']*$days;
+							$grand_tot_other_charges+=intval($row['other_charges'])*intval($days);
 							$grand_tot_original_amount+=$row['original_room_rent']*$days;
 							$grand_tot_amount+=$amount;
 							$grand_tot_tax += $tax*$days;
@@ -266,7 +267,7 @@ if(isset($_SESSION['sql_advance'])){
 							$sql_mop = 'SELECT * FROM `customer_transactions` WHERE `allotment_id`="'.$row['sno'].'" AND `type`="RENT"';
 							$row_mop = mysqli_fetch_array(execute_query($sql_mop));
 								$html .='<td class="number">'.number_format((float)($row['original_room_rent']*$days), 2, '.', '').'</td>
-								<td class="number">'.number_format((float)($row['other_charges']*$days), 2, '.', '').'</td>
+								<td class="number">'.number_format((float)(intval($row['other_charges'])*intval($days)), 2, '.', '').'</td>
 								<td class="number">'.number_format((float)(($row['other_discount'])*$days), 2, '.', '').'</td>';
 								$html .='<td class="number">'.number_format((float)($base_rent*$days), 2, '.', '').'</td>
 								<td class="number">'.number_format((float)($tax*$days), 2, '.', '').'</td>
@@ -489,8 +490,9 @@ if(isset($_SESSION['sql_advance'])){
 						';
 				
 				
-				 header("Content-Type:application/xls");
-                header("Content-Disposition:attachment;filename=download.xls");
+				 header("Content-Type: application/vnd.ms-excel");
+					header("Content-Disposition: attachment; filename=download.xls");
+					header("Cache-Control: max-age=0");
                 echo $html; ?>
 				
 				

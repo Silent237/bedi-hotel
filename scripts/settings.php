@@ -4,7 +4,7 @@ set_time_limit(0);
 error_reporting(E_ALL);
 sethistory();
 
-error_reporting(0);
+error_reporting(1);
 session_cache_limiter('nocache');
 session_start();
 function page_header($title='WeKnow ERP') {
@@ -300,21 +300,21 @@ function page_footer($id = 'home') {
 		$last='';
 		$other='';
 	}
-	echo '
-	<div class="clear" class="no-print"></div>
-        <div id="footerstick" class="no-print">
-            <div id="footercontent">
+	// echo '
+	// <div class="clear" class="no-print"></div>
+    //     <div id="footerstick" class="no-print">
+    //         <div id="footercontent">
 				
                
-				<img src="images/logo.gif" style="width:50px; margin-left:40px;">
-            	<div id="support">
-                    <strong>Helpdesk : <a href="http://www.weknowtech.in">WeKnow Technologies</a></strong><br/>
-                    M : +91-9554969771 to 779<br />
-                    E : info@weknowtech.in
-                </div>
-            </div>
-        </div>
-    </div>';
+	// 			<img src="images/logo.gif" style="width:50px; margin-left:40px;">
+    //         	<div id="support">
+    //                 <strong>Helpdesk : <a href="http://www.weknowtech.in">WeKnow Technologies</a></strong><br/>
+    //                 M : +91-9554969771 to 779<br />
+    //                 E : info@weknowtech.in
+    //             </div>
+    //         </div>
+    //     </div>
+    // </div>';
 ?>	
 	<script>
 	$(".dropdown dt a").on('click', function() {
@@ -1664,16 +1664,18 @@ function get_other_charges($id){
 }
 
 function check_pendency($rent, $allot_date, $id, $exit_date, $allot_id){
-	$sql = 'select sum(amount) as amount from customer_transactions where cust_id='.$id.' and allotment_id='.$allot_id.' and type !="sale_restaurant"';
+    if (empty($id) || empty($allot_id)) {
+        return 0; // or handle as appropriate
+    }
+
+    $sql = 'SELECT SUM(amount) AS amount FROM customer_transactions WHERE cust_id=' . intval($id) . ' AND allotment_id=' . intval($allot_id) . ' AND type != "sale_restaurant"';
     $result = execute_query($sql);
-	$row= mysqli_fetch_assoc($result);
-	$days = get_days($allot_date, $exit_date);
-	//echo $days;
-	//echo $row['amount'];
-	$total_rent=$rent*$days;
-	$remaining_rent=$total_rent-$row['amount'];
-	//echo $remaining_rent;
-	return $remaining_rent;
+    $row = mysqli_fetch_assoc($result);
+    $days = get_days($allot_date, $exit_date);
+    $rent = floatval($rent);
+    $total_rent = $rent * $days;
+    $remaining_rent = $total_rent - floatval($row['amount']);
+    return $remaining_rent;
 }
 
 function get_balance($cust){
@@ -1705,79 +1707,42 @@ function get_balance($cust){
 	
 }
 
-function get_days($from, $to){
-	/*$from_temp = date("Y-m-d 12:00:00", strtotime($from));
-	$to_temp = date("Y-m-d 12:00:59", strtotime($to));
-	
-	if($from>=$from_temp){
-		//echo 'After Noon ';
-		$from_noon=1;
-	}
-	else{
-		//echo'Before Noon ';
-		$from_noon=0;
-	}
-	//echo $from.' @@ '.$to.' @@ '.$from_temp.'<br>';
-	
-	if($to>=$to_temp){
-		//echo 'After Noon ';
-		$to_noon=1;
-	}
-	else{
-		//echo'Before Noon ';
-		$to_noon=0;
-	}
-	//echo $from.' @@ '.$to.' @@ '.$to_temp.'<br>';
-	
-	$days = (strtotime($to)-strtotime($from));
-	$days = ceil($days/86400);
-	if($to_noon==1){
-		if($from_noon==0){
-			$days++;
-		}
-		else{
-			$to_date = date("Y-m-d", strtotime($to));	
-			$from_date = date("Y-m-d", strtotime($from));
-			if($to_date!=$from_date){
-				$days++;
-			}	
-		}
-	}
-	*/
-	$days=1;
-	$from_hour = date("H", strtotime($from));
-	$from_minute = date("i", strtotime($from));
-	$from_hour = 12-$from_hour;
-	//echo $from_hour.'--';
-	if($from_hour<=0){
-		$from_hour += 24;
-	}
-	//echo $from_hour.'--';
-	$from_hour = ($from_hour*60)-($from_minute);
-	$from = strtotime($from)+($from_hour*60);
-	$to = strtotime($to);
-	//$from = $from+86400;
-	//echo $from.'--'.date("Y-m-d H:i:s",$from).'@@'.$to.'@@'.date("Y-m-d H:i:s", $to);
-	if($from > $to){
-		$from_temp = strtotime(date("Y-m-d 12:00", $from));
-		if($to>$from_temp){
-			$days++;
-		}
-		return $days;
-	}
-	else{
-		while($from < $to){
-			$days++;
-			$from = $from+86400;
-			if($from>=$to){
-				//echo ($from_hour/3600).'--'.$days.'<br>';
-				return $days;
-			}
-		}
-	}
-	$hours = ($to-$from)/60/60;
+function get_days($from, $to) {
+    // Validate input dates
+    if (empty($from) || empty($to)) {
+        return 1; // Return 1 day for empty inputs
+    }
 
-	return $days;
+    $from_ts = strtotime($from);
+    $to_ts = strtotime($to);
+    
+    // Validate timestamps
+    if ($from_ts === false || $to_ts === false || $from_ts > $to_ts) {
+        return 1; // Return 1 day for invalid dates or if check-out is before check-in
+    }
+
+    // Get dates at noon for comparison
+    $from_date = date("Y-m-d", $from_ts);
+    $to_date = date("Y-m-d", $to_ts);
+    $from_noon = strtotime($from_date . " 12:00:00");
+    $to_noon = strtotime($to_date . " 12:00:59");
+    
+    $days = 1; // Default to 1 day for same-day stays
+    if ($from_date !== $to_date) {
+        // Calculate days based on noon boundaries
+        $days = ceil(($to_ts - $from_ts) / 86400);
+        if ($from_ts >= $from_noon) {
+            // Check-in after noon, add a day if check-out is after noon
+            if ($to_ts >= $to_noon) {
+                $days++;
+            }
+        } elseif ($to_ts >= $to_noon) {
+            // Check-in before noon, check-out after noon
+            $days++;
+        }
+    }
+    
+    return max(1, $days); // Ensure at least 1 day is billed
 }
 
 function get_unit($id){
@@ -1975,9 +1940,9 @@ function check_prev_date(form_date){
 <body  style="background-color:#ccc">
     
 		<div id="content" class="print-only">
-            <div style="border:0px solid;opacity:0.6;z-index:10;top: 0;position:absolute;background-color:#3a3f51;color:white;text-align:center;padding:10px; width:100%;">';
+            <div style="border:0px solid;opacity:0.6;z-index:10;top: 0;position:absolute;background-color:#3a3f51;color:white;text-align:center;padding:10px; width:100%;display: flex; justify-content: space-around;align-items:center;">';
 	
-	
+	echo '<img src="images/a2.png" alt="" width="140px" height="100px">';
 		$sql = 'select * from general_settings where `desc`="restaurant_name"';
 		$restaurant_name = mysqli_fetch_assoc(execute_query($sql));
 		$restaurant_name = $restaurant_name['rate'];
@@ -1994,6 +1959,10 @@ function check_prev_date(form_date){
 		$hotel_name = mysqli_fetch_assoc(execute_query($sql));
 		$hotel_name = $hotel_name['rate'];
 
+		$sql = 'select * from general_settings where `desc`="address"';
+		$hotel_address = mysqli_fetch_assoc(execute_query($sql));
+		$hotel_address = $hotel_address['rate'];
+
 		$sql = 'select * from general_settings where `desc`="gstin"';
 		$hotel_gstin = mysqli_fetch_assoc(execute_query($sql));
 		$hotel_gstin = $hotel_gstin['rate'];
@@ -2004,16 +1973,24 @@ function check_prev_date(form_date){
 	
 		$file = pathinfo($_SERVER['PHP_SELF'], PATHINFO_FILENAME);
 		if(strrpos($file, "_restaurant")){
-			echo '<h2 style="color:white;">'.$restaurant_name.'</h2>
-				<h2 style="color:white;">Ayodhya</h2>'
+			echo '<div><h2 style="color:white;">'.$restaurant_name.'</h2>
+				<h2 style="color:white;">'.$hotel_address.'</h2></div>'
 				;
 		}
 		else{
-			echo '<h3 >'.$hotel_name.'</h2>
-				<h3 >Ayodhya</h2>'
+			echo '<div><h3>'.$hotel_name.'</h3>
+				<h4 >'.$hotel_address.'</h4></div>'
 				;
 		}
-	echo '
+	echo '<div style="display: flex; align-items: center; font-family: Arial, sans-serif; font-size: 14px;">
+    <img src="images/logo.gif" alt="" width="80px" height="80px" style="margin-right: 10px;">
+    <div style="display: flex; flex-direction: column; line-height: 1.2;">
+	<span style="font-size: 12px; color: #fff;">powered by</span>
+        <a href="https://weknowtech.in" style="color: #127dc9; text-decoration: none; font-weight: bold; font-size: 16px;">Weknow Tech</a>
+        
+    </div>
+</div>
+
             </div>
         </div>
 
@@ -2022,4 +1999,73 @@ function check_prev_date(form_date){
 ';
 }
 
+?>
+
+<?php
+function calculate_invoice_amount($allotment_details, $customer_state, $hotel_state, $restaurant_data = []) {
+    $days = get_days($allotment_details['allotment_date'], $allotment_details['exit_date']);
+    $room_rent = floatval($allotment_details['original_room_rent'] ?? 0);
+    $other_discount = is_numeric($allotment_details['other_discount'] ?? 0) ? floatval($allotment_details['other_discount']) : 0;
+    $discount_value = is_numeric($allotment_details['discount_value'] ?? 0) ? floatval($allotment_details['discount_value']) : 0;
+    $disc_val = $other_discount + $discount_value;
+    $other_charges = floatval($allotment_details['other_charges'] ?? 0);
+    $tax_rate = floatval($allotment_details['tax_rate'] ?? 0) / 2; // Assuming tax_rate is total (e.g., 12% split as 6% CGST + 6% SGST)
+    $invoice_type = $allotment_details['invoice_type'] ?? 'tax';
+
+    $daily_breakdown = [];
+    $taxable_total = 0;
+    $total_cgst = 0;
+    $total_sgst = 0;
+    $total_restaurant = 0;
+
+    // Loop through each day
+    $start_date = strtotime($allotment_details['allotment_date']);
+    for ($i = 0; $i < $days; $i++) {
+        $current_date = date('d-m-Y', $start_date + ($i * 86400));
+        if ($invoice_type === 'tax') {
+            $base_rent = $room_rent + $other_charges - ($disc_val / $days); // Distribute discount evenly
+            $cgst = round($base_rent * ($tax_rate / 100), 2); // 6% CGST
+            $sgst = round($base_rent * ($tax_rate / 100), 2); // 6% SGST
+            $day_total = $base_rent + $cgst + $sgst;
+        } else {
+            $base_rent = $room_rent;
+            $cgst = 0;
+            $sgst = 0;
+            $day_total = $base_rent;
+        }
+        $daily_breakdown[] = [
+            'date' => $current_date,
+            'room_rent' => $base_rent,
+            'cgst' => $cgst,
+            'sgst' => $sgst,
+            'total' => $day_total
+        ];
+        $taxable_total += $base_rent;
+        $total_cgst += $cgst;
+        $total_sgst += $sgst;
+    }
+
+    // Restaurant data
+    foreach ($restaurant_data as $r) {
+        $total_restaurant += floatval($r['amount']);
+    }
+
+    // Grand total
+    $grand_total = $taxable_total + $total_cgst + $total_sgst + $total_restaurant;
+    $amount_payable = round($grand_total);
+    $round_off = round($amount_payable - $grand_total, 2);
+
+    return [
+        'daily_breakdown' => $daily_breakdown,
+        'taxable_total' => round($taxable_total, 2),
+        'total_cgst' => round($total_cgst, 2),
+        'total_sgst' => round($total_sgst, 2),
+        'total_discount' => round($disc_val, 2),
+        'other_charges' => round($other_charges, 2),
+        'restaurant_total' => round($total_restaurant, 2),
+        'grand_total' => round($grand_total, 2),
+        'amount_payable' => $amount_payable,
+        'round_off' => $round_off
+    ];
+}
 ?>

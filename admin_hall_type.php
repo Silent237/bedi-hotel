@@ -86,8 +86,8 @@ if(isset($_GET['del'])){
                 echo'<tr style="background:' . $bg_color . ';">
                         <td>'.$sno++.'</td>
                         <td>'.$row['hall_type'].'</td>
-                        <td><a href="admin_hall_type.php?edit_id='.$row['sno'].'">Edit<a></td>
-                        <td><a href="admin_hall_type.php?del='.$row['sno'].'">Delete<a></td>
+                        <td><a href="admin_hall_type.php?edit_id='.$row['sno'].'"><i class="fas fa-edit"></i><a></td>
+                        <td><a href="admin_hall_type.php?del='.$row['sno'].'"><i class="fas fa-trash-alt" style="color:red;"></i><a></td>
                     </tr>';
             }
         ?>

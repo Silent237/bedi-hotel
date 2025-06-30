@@ -302,11 +302,11 @@ function alternate_value(id){
                     ?>
                     </select>
 				</td>
-				<td>INVOICE TYPE : </td>
+				<!-- <td>INVOICE TYPE : </td>
 				<td><select name="inv_type" id="inv_type" tabindex="<?php echo $tabindex++; ?>">
 				<option value="tax" <?php if(isset($_GET['id'])){ if(strtolower($product['inv_type'])=="tax"){ echo 'selected="selected"';}}?>>TAXABLE</option>
-				<option value="exempt" <?php if(isset($_GET['id'])){ if(strtolower($product['inv_type'])=="exempt"){echo 'selected="selected"';}}?>>EXEMPT</option></select></td>
-			</tr>
+				<option value="exempt" <?php if(isset($_GET['id'])){ if(strtolower($product['inv_type'])=="exempt"){echo 'selected="selected"';}}?>>EXEMPT</option></select></td> -->
+			
             <!--<tr>
             	<td>Description</td>
                 <td><input id="part_name" name="part_name" class="fieldtextmedium" maxlength="255" tabindex="<?php echo $tabindex++; ?>" value="<?php if(isset($_GET['id'])){echo $product['part_name'];} else{ echo $_POST['part_name'];} ?>" type="text"></td>
@@ -339,11 +339,24 @@ function alternate_value(id){
             	<td>HSN Code</td>
                 <td><input id="part_no" name="part_no" class="fieldtextmedium" maxlength="255" tabindex="<?php echo $tabindex++; ?>" value="<?php if(isset($_GET['id'])){echo $product['part_no'];} else{echo $_POST['part_no'];} ?>" type="text"></td>
             </tr>-->
-            <tr>
-            	<td>CGST : </td>
-                <td><input id="part_vat" name="part_vat" class="fieldtextmedium" maxlength="255" tabindex="<?php echo $tabindex++; ?>" value="<?php if(isset($_GET['id'])){echo $product['part_sat'];} else{ echo $_POST['part_sat'];} ?>" type="text"></td>
-            	<td>SGST : </td>
-                <td><input id="part_sat" name="part_sat" class="fieldtextmedium" maxlength="255" tabindex="<?php echo $tabindex++; ?>" value="<?php if(isset($_GET['id'])){echo $product['part_sat'];} else{ echo $_POST['part_sat'];} ?>" type="text"></td>
+          
+            	<td>GST : </td>
+                <td><select id="gst_rate" class="fieldtextmedium" tabindex="<?php echo $tabindex++; ?>" onchange="splitGST(this.value)">
+    <option value="">Select</option>
+    <option value="Nil Rated">Nil Rated</option>
+    <option value="5">5%</option>
+    <option value="12">12%</option>
+    <option value="18">18%</option>
+    <option value="28">28%</option>
+</select>
+
+<input type="hidden" id="part_vat" name="part_vat" value="<?php echo isset($_GET['id']) ? $product['part_vat'] : $_POST['part_vat']; ?>">
+<input type="hidden" id="part_sat" name="part_sat" value="<?php echo isset($_GET['id']) ? $product['part_sat'] : $_POST['part_sat']; ?>">
+
+<tr>
+</td>
+            	<td>HSN CODE : </td>
+                <td><input id="part_srp" name="part_srp" class="fieldtextmedium" maxlength="255" tabindex="<?php echo $tabindex++; ?>" value="<?php if(isset($_GET['id'])){echo $product['part_srp'];} else{ echo $_POST['part_srp'];}?>" type="text"></td>
                             	<td>Unit : </td>
 				<td><select name="part_unit"  id="part_unit" class="select" tabindex="<?php echo $tabindex++; ?>">
 					<?php
@@ -368,14 +381,14 @@ function alternate_value(id){
 					</div>
 
 					<div style="float:left;"></td>
-			</tr>
-            <tr>
+			
 
                 <td>MRP : </td>
              	<td><input id="part_mrp" name="part_mrp" class="fieldtextmedium" maxlength="255" tabindex="<?php echo $tabindex++; ?>" value="<?php if(isset($_GET['id'])){echo $product['part_mrp'];} else{ echo $_POST['part_mrp']; }?>" type="text"></td>
-             	<td>SRP : </td>
-                <td><input id="part_srp" name="part_srp" class="fieldtextmedium" maxlength="255" tabindex="<?php echo $tabindex++; ?>" value="<?php if(isset($_GET['id'])){echo $product['part_srp'];} else{ echo $_POST['part_srp'];}?>" type="text"></td>
-                <td>Barcode : </td>
+             	<!-- <td>SRP : </td>
+                <td><input id="part_srp" name="part_srp" class="fieldtextmedium" maxlength="255" tabindex="<?php echo $tabindex++; ?>" value="<?php if(isset($_GET['id'])){echo $product['part_srp'];} else{ echo $_POST['part_srp'];}?>" type="text"></td> -->
+                </tr><tr>
+				<td>Barcode : </td>
                 <td><input id="part_barcode" name="part_barcode" class="fieldtextmedium" maxlength="255" tabindex="<?php echo $tabindex++; ?>" value="<?php if(isset($_GET['id'])){echo $product['part_barcode'];} else{ echo $_POST['part_barcode'];} ?>" type="text"></td>
             </tr>
             <!--<tr>
@@ -484,14 +497,14 @@ function alternate_value(id){
                 <th>SGST</th>
                 <th>Unit</th>
                 <!--<th>HSN Code</th>-->
-                <th>Rate</th>
+                <th>MRP</th>
                 <!--<th>MSRP</th>-->
-                <th>SRP</th>
+                <th>HSN CODE</th>
                 <!--<th>Warning</th>
                 <th>Opening</th>-->
                 <th>PID</th>
                 <th class="no-print">Edit</th>
-                <th class="no-print">&nbsp;</th>
+                <th class="no-print">Delete</th>
                 <th class="no-print">Merge</th>
 			</tr>
             </thead>
@@ -541,8 +554,8 @@ function alternate_value(id){
 				//<td>'.$row['warning'].'</td>
 				//<td>'.$row['opening'].'</td>
 				echo '<td>'.$row['sno'].'</td>
-				<td class="no-print"><a href="products.php?id='.$row['sno'].'">Edit</a></td>
-				<td class="no-print"><a href="products.php?delid='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><img src="images/del.png" height="20"></a></td>
+				<td class="no-print"><a href="products.php?id='.$row['sno'].'"><i class="fas fa-edit"></i></a></td>
+				<td class="no-print"><a href="products.php?delid='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-trash-alt" style="color:red;"></i></a></td>
 				<td class="no-print"><a href="#" onclick="return alternate_value('.$row['sno'].')">Merge</td>
 				</tr>';           
             }
@@ -552,6 +565,22 @@ function alternate_value(id){
         </form>
         </div>
     </div>
+<script>
+function splitGST(value) {
+    const vat = document.getElementById('part_vat');
+    const sat = document.getElementById('part_sat');
+
+    if (value === "Nil Rated" || value === "") {
+        vat.value = 0;
+        sat.value = 0;
+    } else {
+        const gst = parseFloat(value);
+        const half = (gst / 2).toFixed(2);
+        vat.value = half;
+        sat.value = half;
+    }
+}
+</script>
 
 <?php 
 navigation('');

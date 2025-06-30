@@ -36,12 +36,15 @@ page_footer();
                 </td>
             </tr>
         	<tr class="no-print">
-            	<th colspan="3">
+            	<th>
                 	<input type="submit" name="submit_form" value="Search with Filters" class="btTxt submit">
                 </th>
-                <th colspan="3">
+                <th >
                 	<input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
                 </th>
+				<th colspan="2">
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
             </tr>
         </table>
 	</form>
@@ -111,6 +114,7 @@ page_footer();
 			echo '<tr><th>Total</th><th>'.$cash.'</th><th>'.$credit.'</th></tr>';
 		?>
 	</table>
+	
 	<br/>
 	<table width="100%">
 		<tr><th colspan="11">Check In Report</th></tr>
@@ -303,3 +307,13 @@ page_footer();
 		?>
 		</table>
 	<?php } ?>
+	</div>
+	<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('report_allotment_daily');
+    form.action = 'dailyamount_report_export.php';
+    form.submit();
+    return false;
+}
+</script>

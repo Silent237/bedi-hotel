@@ -245,11 +245,11 @@ if(isset($_POST['submit'])){
 				$tot=$taxable_amt*$tax_rate/100;
 		        $grand_tot=$taxable_amt+$tot;
 				
-				$sql = 'select * from allotment_2 where allotment_id='.$_POST['allot2_sno'].' order by sno desc';
-				$allot2 = mysqli_fetch_assoc(execute_query($sql));
+				// $sql = 'select * from allotment_2 where allotment_id='.$_POST['allot2_sno'].' order by sno desc';
+				// $allot2 = mysqli_fetch_assoc(execute_query($sql));
 				
-				$sql = 'INSERT INTO allotment_2 (guest_name, cust_id, room_id , room_rent,other_discount, original_room_rent, financial_year, invoice_no, registration_no, invoice_type, tax_rate, allotment_date, departure_date, exit_date, created_by , created_on, remarks, occupancy, other_charges, edited_by, edited_on,plans,taxable_amount, allotment_id, edit_status, guest_address, bill_create_date, reference) VALUES ("'.$_POST['cust_name1'].'", "'.$_POST['cust_sno'].'", "'.$v.'", "'.$grand_tot.'", "'.$dis.'", "'.$_POST['room_'.$v].'", "'.$year.'", "'.$_POST['invoice_no'].'", "'.$_POST['registration_no'].'", "'.$inv_type.'", "'.$tax_rate.'",  "'.$_POST['allotment_date'].'", "'.$_POST['departure_date'].'", "'.$_POST['exit_date'].'", "'.$_SESSION['username'].'" ,CURRENT_TIMESTAMP , "'.$_POST['remarks'].'","'.$_POST['occupancy_'.$v].'", "'.$_POST['extrabed_'.$v].'", '.$edited_by.', '.$edition_time.',"'.$_POST['plan'].'","'.$taxable_amt.'", "'.$_POST['allot2_sno'].'", "1","","'.$room['bill_create_date'].'", "'.$_POST['reference'].'")';
-				$result = execute_query($sql);
+				// $sql = 'INSERT INTO allotment_2 (guest_name, cust_id, room_id , room_rent,other_discount, original_room_rent, financial_year, invoice_no, registration_no, invoice_type, tax_rate, allotment_date, departure_date, exit_date, created_by , created_on, remarks, occupancy, other_charges, edited_by, edited_on,plans,taxable_amount, allotment_id, edit_status, guest_address, bill_create_date, reference) VALUES ("'.$_POST['cust_name1'].'", "'.$_POST['cust_sno'].'", "'.$v.'", "'.$grand_tot.'", "'.$dis.'", "'.$_POST['room_'.$v].'", "'.$year.'", "'.$_POST['invoice_no'].'", "'.$_POST['registration_no'].'", "'.$inv_type.'", "'.$tax_rate.'",  "'.$_POST['allotment_date'].'", "'.$_POST['departure_date'].'", "'.$_POST['exit_date'].'", "'.$_SESSION['username'].'" ,CURRENT_TIMESTAMP , "'.$_POST['remarks'].'","'.$_POST['occupancy_'.$v].'", "'.$_POST['extrabed_'.$v].'", '.$edited_by.', '.$edition_time.',"'.$_POST['plan'].'","'.$taxable_amt.'", "'.$_POST['allot2_sno'].'", "1","","'.$room['bill_create_date'].'", "'.$_POST['reference'].'")';
+				// $result = execute_query($sql);
 
 				 
 			}
@@ -278,8 +278,8 @@ if(isset($_POST['submit'])){
 	                $old_data1 = mysqli_fetch_assoc($result);
 					$alot_id=$old_data1['sno'];
 
-					$sql = 'INSERT INTO allotment_2 (guest_name, cust_id, room_id , room_rent, discount, discount_value, original_room_rent, financial_year, invoice_no, registration_no, invoice_type, tax_rate, allotment_date, departure_date, exit_date, created_by , created_on, remarks, occupancy, other_charges, edited_by, edited_on,plans,taxable_amount,allotment_id , `guest_address`, `reference`) VALUES ("'.$_POST['cust_name1'].'","'.$_POST['cust_sno'].'", "'.$v.'" , "'.$grand_tot.'", "'.$_POST['discount_'.$v].'", "'.$_POST['discount_value_'.$v].'", "'.$_POST['room_'.$v].'", "'.$year.'", "'.$_POST['invoice_no'].'", "'.$_POST['registration_no'].'", "'.$inv_type.'", "'.$tax_rate.'",  "'.$_POST['allotment_date'].'","'.$_POST['departure_date'].'", '.$exit_date.', "'.$_SESSION['username'].'" ,CURRENT_TIMESTAMP , "'.$_POST['remarks'].'","'.$_POST['occupancy_'.$v].'", "'.$_POST['extrabed_'.$v].'", '.$edited_by.', '.$edition_time.',"'.$_POST['plan'].'","'.$taxable_amt.'","'.$alot_id.'" , "", "'.$_POST['reference'].'")';
-					$res=execute_query($sql);
+					// $sql = 'INSERT INTO allotment_2 (guest_name, cust_id, room_id , room_rent, discount, discount_value, original_room_rent, financial_year, invoice_no, registration_no, invoice_type, tax_rate, allotment_date, departure_date, exit_date, created_by , created_on, remarks, occupancy, other_charges, edited_by, edited_on,plans,taxable_amount,allotment_id , `guest_address`, `reference`) VALUES ("'.$_POST['cust_name1'].'","'.$_POST['cust_sno'].'", "'.$v.'" , "'.$grand_tot.'", "'.$_POST['discount_'.$v].'", "'.$_POST['discount_value_'.$v].'", "'.$_POST['room_'.$v].'", "'.$year.'", "'.$_POST['invoice_no'].'", "'.$_POST['registration_no'].'", "'.$inv_type.'", "'.$tax_rate.'",  "'.$_POST['allotment_date'].'","'.$_POST['departure_date'].'", '.$exit_date.', "'.$_SESSION['username'].'" ,CURRENT_TIMESTAMP , "'.$_POST['remarks'].'","'.$_POST['occupancy_'.$v].'", "'.$_POST['extrabed_'.$v].'", '.$edited_by.', '.$edition_time.',"'.$_POST['plan'].'","'.$taxable_amt.'","'.$alot_id.'" , "", "'.$_POST['reference'].'")';
+					// $res=execute_query($sql);
 				}
 			}
 			$sql='select * from allotment where cust_id='.$_POST['cust_sno'].' and room_id='.$v;
@@ -378,6 +378,7 @@ if(isset($_GET['del'])){
 	
 }
 ?>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <style>
 .ui-autocomplete-loading { background: white url('images/ui-anim_basic_16x16.gif') right center no-repeat; }
 </style>
@@ -401,7 +402,7 @@ function get_room_rent(){
         dataType:"json"
     })
     .done(function(data) {
-        var txt = '<table width="100%"><tr><th>Room No.</th><th>Occupancy</th><th>Base Rent</th><th>Extra Bed</th><th>Discount</th><th>Taxable</th><th>CGST</th><th>SGST</th><th>Net Price</th>';
+        var txt = '<table width="100%"><tr><th class="small">Room No.</th><th class="small">Occupancy</th><th class="small">Base Rent</th><th class="small">Extra Bed</th><th class="small">Discount</th><th class="small">Taxable</th><th class="small">CGST</th><th class="small">SGST</th><th class="small">Net Price</th>';
         
         var totalRooms = data.length;
         var totalRent = 0;
@@ -443,8 +444,8 @@ function get_room_rent(){
         });
 		
 
-        txt += '<tr><th>Total Room</th><th>Total Base Rent</th><th>Total Discount</th><th>Total Taxable</th><th>Total CGST</th><th>Total SGST</th><th>Total Net Price</th></tr>';
-        txt += '<tr><td><input name="total_room" style="width:100px;" type="text" value="'+totalRooms+'"></td><td><input name="total_rent" style="width:100px;" type="text" id="total_rent" value="'+totalRent.toFixed(2)+'"></td><td id="total_discount">'+totalDiscount.toFixed(2)+'</td><td id="total_taxable">'+totalTaxable.toFixed(2)+'</td><td id="total_cgst">'+totalCGST.toFixed(2)+'</td><td id="total_sgst">'+totalSGST.toFixed(2)+'</td><td id="total_net_price">'+totalNetPrice.toFixed(2)+'</td></tr>';
+        txt += '<tr><th></th><th>Total Room</th><th>Total Base Rent</th><th>Total Discount</th><th>Total Taxable</th><th>Total CGST</th><th>Total SGST</th><th colspan="2">Total Net Price</th></tr>';
+        txt += '<tr><td></td><td style="text-align:center;" class="small"><input name="total_room" style="width:100px;" type="text" value="'+totalRooms+'"></td><td style="text-align:center;" class="small"><input name="total_rent" style="width:100px;" type="text" id="total_rent" value="'+totalRent.toFixed(2)+'"></td><td style="text-align:center;" id="total_discount">'+totalDiscount.toFixed(2)+'</td><td style="text-align:center;" id="total_taxable">'+totalTaxable.toFixed(2)+'</td><td style="text-align:center;" id="total_cgst">'+totalCGST.toFixed(2)+'</td><td style="text-align:center;" id="total_sgst">'+totalSGST.toFixed(2)+'</td><td style="text-align:center;font-weight:bold;" colspan="2" id="total_net_price">'+totalNetPrice.toFixed(2)+'</td></tr>';
         
         $("td#insertrow").html(txt);
 
@@ -479,8 +480,8 @@ function calculateTotal() {
         var discount = parseFloat($('input[name="discount_'+roomId+'"]').val()) || 0;
 
         var taxableAmount = rent - discount;
-        var cgst = taxableAmount * 0.09; // Assuming 9% CGST
-        var sgst = taxableAmount * 0.09; // Assuming 9% SGST
+        var cgst = taxableAmount * 0.06; 
+        var sgst = taxableAmount * 0.06; 
         var netPrice = taxableAmount + cgst + sgst;
 
         // Update the individual room values
@@ -762,7 +763,7 @@ $("input#company_name").on("keydown.autocomplete", function() {
 	
 </script>
  <div id="container">
-        <h2>New Allotment</h2>	
+        <h2>CHECK-IN</h2>	
 		<?php echo '<ul><h4>'.$msg.'</h4></ul>'; $tab=1;?>
 		<div id="formbg" style="background-color: red;">
 			<style>
@@ -795,8 +796,8 @@ $("input#company_name").on("keydown.autocomplete", function() {
 					<td><input id="address" name="address" value="<?php if(isset($_GET['check_in'])){echo $customer_check_in['address'];}elseif(isset($row1['address'])){echo $row1['address'];} else { echo $cust_details['address'];}?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" required /></td>	
 				</tr>
 				<tr>
-					<td>City* : </td>
-					<td><input id="city" name="city" value="<?php if(isset($_GET['check_in'])){echo $customer_check_in['city'];}elseif(isset($row1['city'])){echo $row1['city'];} else if(isset($_GET['id'])){ echo $cust_details['city'];}?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" required /> &nbsp; PIN* : &nbsp; <input id="zipcode" name="zipcode" value="<?php if(isset($_GET['check_in'])){echo $customer_check_in['zipcode'];}elseif(isset($row1['zipcode'])){echo $row1['zipcode'];} else if(isset($_GET['id'])){ echo $cust_details['zipcode'];}?>" class="field text small" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" required /></td>
+					<td>City* : <br>PIN* :</td>
+					<td><input id="city" name="city" value="<?php if(isset($_GET['check_in'])){echo $customer_check_in['city'];}elseif(isset($row1['city'])){echo $row1['city'];} else if(isset($_GET['id'])){ echo $cust_details['city'];}?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" required /><br><input id="zipcode" name="zipcode" value="<?php if(isset($_GET['check_in'])){echo $customer_check_in['zipcode'];}elseif(isset($row1['zipcode'])){echo $row1['zipcode'];} else if(isset($_GET['id'])){ echo $cust_details['zipcode'];}?>" class="field text " maxlength="255" tabindex="<?php echo $tab++;?>" type="text" required /></td>
 					<td>State* : </td>
 					<td><select id="state" name="state" class="field select addr" tabindex="<?php echo $tab++;?>" required >
 					<?php
@@ -851,13 +852,13 @@ $("input#company_name").on("keydown.autocomplete", function() {
 				</tr>
 				<tr>
 				    <td>ID Type and Number : </td>
-				    <td><select id="id_type" name="id_type" class="field text small" maxlength="255" tabindex="<?php echo $tab++;?>" >
+				    <td><select id="id_type" name="id_type" class="field text " maxlength="255" tabindex="<?php echo $tab++;?>" >
 				    	<option value="AADHAAR">Aadhaar</option>
 				    	<option value="PAN">PAN</option>
 				    	<option value="DL">Driving License</option>
 				    	<option value="OTHERS">Others</option>
 				    
-				    </select><input id="id_3" name="id_3" value="<?php if(isset($_GET['check_in'])){echo $customer_check_in['id_3'];}elseif(isset($row1['id_3'])){echo $row1['id_3'];} else if(isset($_GET['id'])){ echo $cust_details['id_3'];}?>" class="field text small" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" /></td>
+				    </select><br><input id="id_3" name="id_3" value="<?php if(isset($_GET['check_in'])){echo $customer_check_in['id_3'];}elseif(isset($row1['id_3'])){echo $row1['id_3'];} else if(isset($_GET['id'])){ echo $cust_details['id_3'];}?>" class="field text " maxlength="255" tabindex="<?php echo $tab++;?>" type="text" /></td>
 				    <td>Remarks : </td>
 					<td>
 						<input id="remarks" name="remarks" value="<?php if(isset($_GET['check_in'])){echo $customer_check_in['remarks'];}elseif(isset($old_data['remarks'])){echo $old_data['remarks'];}?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" />
@@ -866,52 +867,41 @@ $("input#company_name").on("keydown.autocomplete", function() {
 				<tr>
 					<td>Room No. : </td>
 					<td>	
-						<table width="100%">
-							<tr style="background: #ccc">
-								<td width="90%">
-									<select required name="room_id[]" id="room_id" tabindex="<?php echo $tab++;?>" class="room_id" <?php if(!isset($_GET['id'])){echo 'multiple="multiple"';}?> onBlur="get_room_rent();" style="height: 50px;">
-									<?php
-									$sql = 'select * from room_master order by abs(room_name)';
-									$result = execute_query($sql);
-									while($row_room = mysqli_fetch_array($result)){
-										if($row_room['status']==1){
-								
-											if(isset($old_data['room_id'])){
-												if($old_data['room_id']==$row_room['sno']){
-													echo '<option value="'.$row_room['sno'].'" ';
-													echo 'selected="selected"';
-													echo '>'.$row_room['room_name'].'</option>';
-												}
-											}
-										}
-										else{
-											if(isset($old_data['room_id'])){
-												if($old_data['room_id']==$row_room['sno']){
-													echo '<option value="'.$row_room['sno'].'" ';
-													echo 'selected="selected"';
-													echo '>'.$row_room['room_name'].'</option>';
-												}
-												else{
-													echo '<option value="'.$row_room['sno'].'" ';
-													echo '>'.$row_room['room_name'].'</option>';
-												}
-											}
-											else{
-												echo '<option value="'.$row_room['sno'].'" ';
-												echo '>'.$row_room['room_name'].'</option>';
-											}
-										}
-									}
-									
-									?>
-									</select>
-								</td>
-								<?php //echo $l; ?>
-								<td><input type="button" onClick="get_room_rent();" style="float: right; background-color:#00888d;color:white;" class="small" value="Fetch"></td>
-							</tr>
-						</table>
-					</td>
-                    <input type="hidden" name="room_sno" id="room_sno" value="" />
+    <table width="100%">
+        <tr style="background: #ccc">
+            <td width="90%">
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				
+				<select required name="room_id[]" id="room_id" tabindex="<?php echo $tab++;?>" 
+    class="room_id" <?php if(!isset($_GET['id'])){echo 'multiple="multiple"';}?> 
+    onBlur="get_room_rent();" 
+    style="height: 50px; width: 200px;" 
+    data-placeholder="Search Room Number">
+
+                    
+                    <option value="">Select Room</option>
+                    <?php
+                    $sql = 'SELECT * FROM room_master WHERE room_status = 1 and status = 0 OR status IS NULL ORDER BY ABS(room_name)';
+                    $result = execute_query($sql);
+                    while ($row_room = mysqli_fetch_array($result)) {
+                        $selected = (isset($old_data['room_id']) && $old_data['room_id'] == $row_room['sno']) ? 'selected="selected"' : '';
+                        echo '<option value="' . $row_room['sno'] . '" ' . $selected . '>' . $row_room['room_name'] . '</option>';
+                    }
+                    ?>
+                </select>
+            </td>
+            <td>
+                <input type="button" onClick="get_room_rent();" 
+                       style="float: right; background-color:#00888d;color:white;" 
+                       class="small" value="Fetch">
+            </td>
+        </tr>
+    </table>
+</td>
+<input type="hidden" name="room_sno" id="room_sno" value="" />
 					<td>Allotment Date : </td>
 					<td><input name="allotment_date" type="text" value="<?php if(isset($old_data['allotment_date'])){echo $old_data['allotment_date'];}?>" class="field text medium" tabindex="<?php echo $tab++;?>" id="allotment_date" /></td>
 					
@@ -1021,137 +1011,7 @@ $("input#company_name").on("keydown.autocomplete", function() {
 			</table>
 		</form>
 		</div>
-		<table width="100%">
-			<tr style="background:#000; color:#FFF;">
-				<th>S.No.</th>
-				<th>Guest Name</th>
-				<th>Company Name</th>
-				<th>Mobile</th>
-				<th>Address</th>
-				<th>Occupancy</th>
-				<th>Room No.</th>
-				<th>Plan</th>
-				<th class="no-print">Extra Bed</th>
-				<th class="no-print">Total Rent</th>
-				<th>Allotment Date</th>
-				<th>Reference</th>
-				<th class="no-print"></th>
-				<th class="no-print"></th>
-				<!--<th></th>-->
-                <th class="no-print"></th>
-			</tr>	
-    <?php
-	$sql = 'SELECT `allotment`.* FROM `allotment` LEFT JOIN `room_master` on `room_master`.`sno` = `allotment`.`room_id` WHERE `allotment`.`exit_date` IS NULL OR `allotment`.`exit_date`="" ORDER BY `room_master`.`room_name` ASC';
-	$result = execute_query($sql);
-	while($row = mysqli_fetch_array($result)){
-	$i=1;
-	$occcu=0;
-	foreach($result as $row){
-		if($i%2==0){
-			$col = '#CCC';
-		}
-		elseif($row['hold_date']!=''){
-			$col = 'red';
-		}
-		else{
-			$col = '#EEE';
-		}
-		if($row['exit_date']==''){
-			$row['exit_date'] = date("d-m-Y H:i");
-		}
-		// $days = strtotime($row['exit_date'])-strtotime($row['allotment_date']);
-		// $days = date("d", $days);
-		// $total_rent=($row['room_rent'])*$days;
-	
-		$dateDifference = strtotime($row['exit_date']) - strtotime($row['allotment_date']);
-		$days = floor($dateDifference / (60 * 60 * 24)); 
-		$roomRent = floatval($row['room_rent']);
-		$total_rent = $roomRent * $days;
-
-		if($row['cancel_date']!=''){
-			$col = '#F00"';
-			$cancel = '<br />Cancelled On : '.$row['cancel_date'];
-			$cancel_display = 'Uncancel';
-		}
-		else{
-			$row_col = '';
-			$cancel = '';
-			$cancel_display = 'Cancel';
-		}
-		echo '<tr style="background:'.$col.'; text-align:center;">
-		<td>'.$i++.'</td>
-		<td>'.$row['guest_name'].$cancel.'</td>
-		<td>'. get_company_name($row['cust_id']).'</td>';
-		$sql_cus="select * from customer where sno='".$row['cust_id']."'";
-		$sql_run=execute_query($sql_cus);
-		$row_cust=mysqli_fetch_array($sql_run);
-       echo '<td>'.$row_cust['mobile'].'</td>';
-       if($row_cust['address'] != ''){
-       	echo '<td>'.$row_cust['address'].'</td>';
-       }
-       else{
-       	echo '<td>'.$row['guest_address'].'</td>';
-       }
-       echo '<td>'.$row['occupancy'].'</td>
-		<td>'.get_room($row['room_id']).'</td>
-		<td>'.$row['plans'].'</td>
-		<td class="no-print">'.$row['other_charges'].'</td>
-		<td class="no-print">'.$total_rent.'</td>	
-		<td>'.date("d-m-Y,h-i A" ,strtotime($row['allotment_date'])).'</td>
-		<td>'.get_reference($row['reference']).'</td>
-		<td class="no-print"><a href="allotment.php?id='.$row['sno'].'&f=1">Edit</a></td>';
-		if($row['hold_date']==''){
-		echo '<td class="no-print"><a href="allotment.php?hold='.$row['sno'].'&room_id='.$row['room_id'].'"></a></td>';
-		}
-		else{
-			echo '<td class="no-print"></td>';
-		}
-		//<td class="no-print"><a href="allotment.php?cancel='.$row['sno'].'">'.$cancel_display.'</a></td>
-		echo '<td class="no-print"><!--<a href="allotment.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Delete</a>--></td>
-	</tr>'
-	;
-	   $occcu +=(float)$row['occupancy'];
-	}
-	$occ = $i - 1;
-	echo '<tr>
-	<td colspan="5" style="text-align:center;"><b style="font-size:20px;align:center;" >OCCUPIED : '.$occ.'&nbsp;ROOM</b></td>
-	<td class="no-print"></td>
-	<td colspan="4" style="text-align:center;"><b style="font-size:20px;" >PAX / PERSON : '.$occcu.'</b></td><td class="no-print"></td><td class="no-print"></td><td class="no-print"></td><td class="no-print"></td><td class="no-print"></td></tr>';
-	}
-?>
-</table>
-<table>
-	<?php 
-	$sql_plan = 'SELECT count(*) as count , plans FROM `allotment` WHERE (`exit_date` IS NULL OR `exit_date`="") GROUP BY `plans`';
-	//echo $sql_plan;
-	$result_plan = execute_query($sql_plan);
-	echo '<tr><th colspan="3">PLAN SUMMERY</th></tr><tr><th>S.No.</th><th>PLAN TYPE</th><th>OCCUPIED</th></tr>';
-	$i = 1;
-	while($row_plan = mysqli_fetch_array($result_plan)){
-		echo '<tr><th>'.$i++.'</th>';
-		if ($row_plan['plans'] == '') {
-			echo '<td>No Plan</td>';
-		}
-		else{
-			echo '<td>'.$row_plan['plans'].'</td>';
-		}
-		echo '<td>'.$row_plan['count'].'</td></tr>';
-	}
-	?>
-</table>
-<!-- <h3>Executed Queries and Execution Time:</h3>
-    <ul>
-	<?php// $i=0; ?>
-        <?php// foreach ($queries as $query_info): ?>
-            <li>
-				<?php// $i++; ?>
-                <strong>Query:</strong> <?php// echo htmlspecialchars($query_info['query']); ?><br>
-                <strong>Execution Time:</strong> <?php //echo number_format($query_info['time'], 6); ?> seconds
-				
-			</li>
-        <?php //endforeach; ?>
-        <?php// echo '<h1>total queries="'.$i.'"</h1>'?>
-    </ul> -->
+		
 </div>
 <script src="js/jquery.datetimepicker.full.js"></script>
 <script language="JavaScript">
@@ -1210,4 +1070,14 @@ $(document).ready(function(){
 });	
 	
 <?php } ?>
+</script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('.room_id').select2({
+        placeholder: "Select Room(s)",
+        allowClear: true,
+        width: 'resolve'
+    });
+});
 </script>

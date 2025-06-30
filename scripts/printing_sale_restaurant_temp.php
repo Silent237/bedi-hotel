@@ -125,10 +125,10 @@ if(isset($_GET['style'])){
 			<div id="company_info">
 				<div id="company">
 					<div id="company" style="margin-top:10px">
-						<div id="logo"><h1 style="font-size:22px;">TIPSY TOWN</h1><br><h1 style="font-size:16px;">(Hope Town Hospitality Private Limited)</h1><br><h4 style="font-size:12px;letter-spacing:2px"></b></h4></div>
+						<div id="logo"><h1 style="font-size:22px;"><?php echo $company; ?></h1><br><h1 style="font-size:16px;"><?php echo $slogan; ?></h1><br><h4 style="font-size:12px;letter-spacing:2px"></b></h4></div>
 					</div>
 					<div id="address" style="margin-top:4px">
-						<p style="font-size:16px;letter-spacing: 1px; margin-bottom:3px;">1,4038, Civil Line, Ayodhya</p>
+						<p style="font-size:16px;letter-spacing: 1px; margin-bottom:3px;"><?php echo $address; ?></p>
 						<p style="font-size:16px;letter-spacing: 1px; margin-bottom:3px;"> </p>
 						<p style="font-size:16px;letter-spacing: 1px"></p>
 					</div>

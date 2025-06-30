@@ -147,12 +147,15 @@ $("input#company_name").on("keydown.autocomplete", function() {
                 	</td>
                 </tr>
             	<tr class="no-print">
-                	<th colspan="3">
+                	<th colspan="2">
                     	<input type="submit" name="submit_form" value="Search with Filters" class="btTxt submit">
                     </th>
-                    <th colspan="3">
+                    <th colspan="2">
                     	<input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
                     </th>
+					<th colspan="2">
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
                 </tr>
             </table>	
 		</form>
@@ -305,12 +308,12 @@ $("input#company_name").on("keydown.autocomplete", function() {
 							echo '<td class="no-print">Booked</td>';
 						}
 						if($row['status'] == 0 AND $row_mop['type'] == 'ADVANCE_AMT'){
-						echo '<td class="no-print"><a href="res_advance_booking.php?e_id='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Edit</a></td>';
+						echo '<td class="no-print"><a href="res_advance_booking.php?e_id='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-edit"></i></a></td>';
 						}
 						else{
 							echo '<td class="no-print"></td>';
 						}
-						echo '<td class="no-print"><a href="res_advance_print.php?print_id='.$row['sno'].'"  target="_blank">View</a></td>';
+						echo '<td class="no-print"><a href="res_advance_print.php?print_id='.$row['sno'].'"  target="_blank"><i class="fas fa-eye"></i></a></td>';
 						if($row['status'] == 0 AND $row_mop['type'] == 'ADVANCE_AMT'){
 						echo '<td class="no-print"><a href="res_report_advance.php?cancel_id='.$row_mop['sno'].'" onclick="return confirm(\'Are you sure?\');">Cancel</a></td>';
 						}
@@ -433,6 +436,16 @@ function edit_amount(id){
 		}
 	});
 
+}
+</script>
+
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('report_form');
+    form.action = 'res_advance_report_export.php';
+    form.submit();
+    return false;
 }
 </script>
 <?php

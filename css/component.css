@@ -24,13 +24,13 @@ table {
     border-collapse:collapse;
     margin-bottom: 0.5em;
     width: 100%;
-    background-color: #00888d17;
+    
 }
 td, th {
     padding: 0.25em 0.25em;
 }
 td{
-    text-align: left;
+    text-align: center;
 }
 	td.err {
 		background-color: #e992b9;
@@ -40,7 +40,7 @@ td{
 		line-height: 1;
 	}
 thead th {
-    background-color: #27e7ee8d;
+    background-color: #00888d;
     font-weight: bold;
     color: #fff;
     white-space: nowrap;
@@ -59,14 +59,14 @@ tbody td{
 	font-weight: 600;
 	text-transform: uppercase; 
 	background-color: #d1a7a734;*/
-	background-color: #00888d17;
+	
 }
 
 tbody tr:nth-child(2n-1) {
-    background-color: #fff;   
+    background-color: #EEE;   
 }
 tbody tr:nth-child(2n){
-    background-color:#fff;
+    background-color:#CCC;
 }
 
 /* For appearance */

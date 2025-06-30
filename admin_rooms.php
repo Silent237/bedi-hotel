@@ -15,7 +15,7 @@ if(isset($_POST['submit'])){
 	}
 	if($msg==''){
 		if($_POST['room_sno']!=''){
-			$sql = 'update room_master set room_name="'.$_POST['room_name'].'", floor_id="'.$_POST['floor_id'].'", rent="'.$_POST['rent'].'", rent_double="'.$_POST['rent_double'].'", rent_extra="'.$_POST['rent_extra'].'", occupancy="'.$_POST['occupancy'].'", edited_by="'.$_SESSION['username'].'", edited_on=CURRENT_TIMESTAMP,remarks="'.$_POST['remarks'].'", category_id="'.$_POST['category_id'].'",multiple="'.$_POST['multiple'].'" where sno='.$_POST['room_sno'];
+			$sql = 'update room_master set room_name="'.$_POST['room_name'].'", floor_id="'.$_POST['floor_id'].'", rent="'.$_POST['rent'].'", rent_double="'.$_POST['rent_double'].'", rent_extra="'.$_POST['rent_extra'].'", sgst="'.$_POST['sgst'].'", cgst="'.$_POST['cgst'].'", occupancy="'.$_POST['occupancy'].'", edited_by="'.$_SESSION['username'].'", edited_on=CURRENT_TIMESTAMP,remarks="'.$_POST['remarks'].'", category_id="'.$_POST['category_id'].'",multiple="'.$_POST['multiple'].'" where sno='.$_POST['room_sno'];
 			$result = execute_query($sql);
 			$msg .= '<li>Update sucessful.</li>';
 		}
@@ -23,7 +23,7 @@ if(isset($_POST['submit'])){
 			$sql='select * from room_master where room_name="'.$_POST['room_name'].'"';
 			$result = execute_query($sql);
 				if(mysqli_num_rows($result)==0){
-					$sql='INSERT INTO room_master (room_name, floor_id, rent, rent_double, rent_extra, occupancy, created_by, created_on, remarks, category_id, multiple) VALUES ("'.$_POST['room_name'].'","'.$_POST['floor_id'].'", "'.$_POST['rent'].'", "'.$_POST['rent_double'].'", "'.$_POST['rent_extra'].'", "'.$_POST['occupancy'].'", "'.$_SESSION['username'].'", CURRENT_TIMESTAMP, "'.$_POST['remarks'].'", "'.$_POST['category_id'].'", "'.$_POST['multiple'].'")';
+					$sql='INSERT INTO room_master (room_name, floor_id, rent, rent_double, rent_extra, sgst, cgst, occupancy, created_by, created_on, remarks, category_id) VALUES ("'.$_POST['room_name'].'","'.$_POST['floor_id'].'", "'.$_POST['rent'].'", "'.$_POST['rent_double'].'", "'.$_POST['rent_extra'].'", "'.$_POST['sgst'].'", "'.$_POST['cgst'].'", "'.$_POST['occupancy'].'", "'.$_SESSION['username'].'", CURRENT_TIMESTAMP, "'.$_POST['remarks'].'", "'.$_POST['category_id'].'")';
 					$result = execute_query($sql);
 					$msg="Room Added successfully";
 				}
@@ -57,6 +57,47 @@ function get_room_rent(id){
 	});	
 }
 </script>
+
+
+
+<style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 42px;
+  height: 24px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+   background-color: #f44336;
+  transition: .4s;
+  border-radius: 24px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px; width: 18px;
+  left: 3px; bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+input:checked + .slider:before {
+  transform: translateX(18px);
+}
+</style>
+
  <div id="container">
         <h2>Add New Room</h2>	
 		<?php echo '<ul><h4>'.$msg.'</h4></ul>';
@@ -85,8 +126,7 @@ function get_room_rent(id){
                             ?>
                             </select>
 						</td>
-				</tr>
-				<tr>
+				
 					<td>Category</td>
 					<td>
 						<select name="category_id" id="category_id" tabindex="<?php echo $tab++;?>" onchange="get_room_rent(this.value)">
@@ -106,10 +146,11 @@ function get_room_rent(id){
 							?>
 						</select>
 					</td>
+					</tr>
+				<tr>
 					<td>Occupancy</td>
 					<td><input id="occupancy" name="occupancy" value="<?php if(isset($row['occupancy'])){echo $row['occupancy'];}?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" /></td>					
-				</tr>
-				<tr>
+				
 					<td>Single Rent</td>
 					<td><input id="rent" name="rent" value="<?php if(isset($row['rent'])){echo $row['rent'];}?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" /></td>
                     <td>Double Rent</td>
@@ -118,16 +159,29 @@ function get_room_rent(id){
                 <tr>
                     <td>Extra Rent</td>
 					<td><input id="rent_extra" name="rent_extra" value="<?php if(isset($row['rent_extra'])){echo $row['rent_extra'];}?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>" type="text" /></td>
-                    <td>Multiple Occupancy</td>
-                    <td><input type="checkbox" name="multiple" value="yes"<?php if(isset($row['multiple'])){ if($row['multiple']=="yes"){ echo 'checked="checked"';}}?>></td>
-                </tr>
-                <tr>
-					<td>Remarks</td>
+                    <!-- <td>Multiple Occupancy</td>
+                    <td><input type="checkbox" name="multiple" value="yes"<?php if(isset($row['multiple'])){ if($row['multiple']=="yes"){ echo 'checked="checked"';}}?>></td> -->
+              <td>GST : </td>
+                <td><select id="gst_rate"  tabindex="<?php echo $tabindex++; ?>" onchange="splitGST(this.value)">
+    <option value="">Select</option>
+    <option value="Nil Rated">Nil Rated</option>
+    <option value="5">5%</option>
+    <option value="12">12%</option>
+    <option value="18">18%</option>
+    <option value="28">28%</option>
+</select>
+
+<input type="hidden" id="sgst" name="sgst" value="<?php echo isset($_GET['id']) ? $row['sgst'] : $_POST['sgst']; ?>">
+<input type="hidden" id="cgst" name="cgst" value="<?php echo isset($_GET['id']) ? $row['cgst'] : $_POST['cgst']; ?>">
+
+
+</td>
+					<td>HSN Code</td>
 					<td><input id="remarks" name="remarks" value="<?php if(isset($row['remarks'])){echo $row['remarks'];}?>" class="field text medium" maxlength="255" tabindex="<?php echo $tab++;?>"type="text" /></td>
                     <td colspan="2"></td>
 				</tr>
 				<tr>
-					<td colspan="4"><input type="hidden" name="room_sno" value="<?php if(isset($_GET['id'])){echo $_GET['id'];}?>" />
+					<td colspan="6"><input type="hidden" name="room_sno" value="<?php if(isset($_GET['id'])){echo $_GET['id'];}?>" />
 					<input id="submit" name="submit" class="btTxt submit" type="submit" value="Add/Update Room" onMouseDown="" tabindex="<?php echo $tab++;?>"></td>
 				</tr>
 			</table>
@@ -141,9 +195,12 @@ function get_room_rent(id){
 					<th>Rent</th>
 					<th>Double Rent</th>
 					<th>Extra Rent</th>
+					<th>SGST</th>
+					<th>CGST</th>
 					<th>Occupancy</th>
-                    <th>Multiple Occupancy</th>
-					<th>Remarks</th>
+                    <!-- <th>Multiple Occupancy</th> -->
+					<th>HSN Code</th>
+					<th>Status</th>
 					<th>Edit</th>
 					<th>Delete</th>
 				</tr>
@@ -167,16 +224,62 @@ function get_room_rent(id){
 		<td>'.$row['rent'].'</td>
 		<td>'.$row['rent_double'].'</td>
 		<td>'.$row['rent_extra'].'</td>
+		<td>'.$row['sgst'].'</td>
+		<td>'.$row['cgst'].'</td>
 		<td>'.$row['occupancy'].'</td>
-		<td>'.$row['multiple'].'</td>
+		
 		<td>'.$row['remarks'].'</td>
-		<td><a href="admin_rooms.php?id='.$row['sno'].'">Edit</a></td>
-		<td><a href="admin_rooms.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Delete</a></td>
+		<td>
+    <label class="switch">
+        <input type="checkbox" onchange="toggleStatus('.$row['sno'].', this.checked ? 1 : 0)" '.($row['room_status'] == 1 ? 'checked' : '').'>
+        <span class="slider"></span>
+    </label>
+</td>
+
+		<td><a href="admin_rooms.php?id='.$row['sno'].'"><i class="fas fa-edit"></i></a></td>
+		<td><a href="admin_rooms.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-trash-alt" style="color:red;"></i></a></td>
 		</tr>';
 	}
 ?>
 </table>
 </div>
+
+
+<script>
+function toggleStatus(id, status) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "room_status.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            alert("Status updated successfully!");
+        } else {
+            alert("Failed to update status.");
+        }
+    };
+    
+    xhr.send("id=" + id + "&status=" + status);
+}
+</script>
+
+<script>
+function splitGST(value) {
+    const vat = document.getElementById('sgst');
+    const sat = document.getElementById('cgst');
+
+    if (value === "Nil Rated" || value === "") {
+        vat.value = 0;
+        sat.value = 0;
+    } else {
+        const gst = parseFloat(value);
+        const half = (gst / 2).toFixed(2);
+        vat.value = half;
+        sat.value = half;
+    }
+}
+</script>
+
 <?php
 navigation('');
 page_footer();

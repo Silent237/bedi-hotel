@@ -90,7 +90,18 @@ page_header();
 							<td><input type="text" name="contact_number" id="contact_number" tabindex="<?php echo $tabindex++; ?>" value="<?php if(isset($_GET['edit_id'])){echo $row_edit['contact_number'];} ?>" ></td>
 							
 							<td>Booking/Event Date</td>
-							<td><input type="date" name="booking_date" id="booking_date" value="<?php if(isset($_GET['edit_id'])){echo $row_edit['booking_date'];}?>" tabindex="<?php echo $tabindex++; ?>"></td>
+							<td>
+    <input type="date" name="booking_date" id="booking_date" 
+        value="<?php 
+            if (isset($_GET['edit_id'])) {
+                echo $row_edit['booking_date'];
+            } else {
+                echo date('Y-m-d'); // Set current date
+            }
+        ?>" 
+        tabindex="<?php echo $tabindex++; ?>">
+</td>
+
 							
 						</tr>
 						

@@ -88,14 +88,18 @@ page_header();
                     ?>
                     </select>
 				</td>
-				
-            	<th colspan="5">
-                   	<input type="submit" name="submit" value="Search with Filters" class="btTxt submit">
+				</tr><tr>
+            	<th colspan="2">
+                   	<input type="submit" name="search" value="Search with Filters" class="btTxt submit">
                 </th>
+				<th colspan="2">
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
             </tr>
         </table>
+		</form>
 		<?php
-		if(isset($_POST['submit'])){
+		if(isset($_POST['search'])){
 			if($_POST['part_type']=='' && $_POST['item']==''){
 				$sql = 'select * from new_type order by description';
 				$result = execute_query($sql);
@@ -286,7 +290,7 @@ page_header();
 		}
 		?>
         
-    </form>
+    
 </div>
 <script>
 /*$(document).ready(function(){
@@ -311,6 +315,16 @@ $("#part_type").change(function(){
 	// })
 })
 */
+</script>
+
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('report_allotment');
+    form.action = 'item_report_export.php';
+    form.submit();
+    return false;
+}
 </script>
 <?php
 navigation('');

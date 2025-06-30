@@ -154,12 +154,15 @@ page_header();
                     </td>
                 </tr>
                 <tr>
-                	<th colspan="3">
-                    	<input type="submit" name="submit" value="Search with  Filters" class="btTxt submit">
+                	<th colspan="2">
+                    	<input type="submit" name="search" value="Search with  Filters" class="btTxt submit">
                     </th>
                     <th colspan="2">
                     	<a href="report_proforma.php" class="btn btn-primary">Reset Filters</a>
                     </th>
+					<th >
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
                 </tr>
             </table>
 		
@@ -257,7 +260,7 @@ page_header();
     		<td><?php echo $row['cgst']; ?></td>
     		<td><?php echo $row['totel']; ?></td>
     		<!--<td><a href="report_banquet_hall.php?detail=<?php //echo $row['sno']; ?>">Detail</a></td>-->
-    		<td><a href="proforma.php?e_id=<?php echo $row['sno']; ?>" target="_blank">Edit</a></td>
+    		<td><a href="proforma.php?e_id=<?php echo $row['sno']; ?>" target="_blank"><i class="fas fa-edit"></i></a></td>
     		<td><a href="print_proforma.php?id=<?php echo $row['sno']; ?>" target="_blank">Print</a></td>
             <!--<td><a href="banquet_hall.php?e_id=<?php //echo $row['sno']; ?>" target="_blank">Edit</a></td>-->
             <?php
@@ -310,6 +313,15 @@ page_header();
   </form>      
 	</div>
 </div>
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('purchase_report');
+    form.action = 'proforma_report_export.php';
+    form.submit();
+    return false;
+}
+</script>
 <?php
 navigation('');
 page_footer();

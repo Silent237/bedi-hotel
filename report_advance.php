@@ -12,6 +12,10 @@ if(isset($_GET['cancel_id'])){
 }
 ?>
 <style>
+	.table tr td {
+        background-color: transparent !important;
+        box-shadow: none !important;
+    }
     .ui-autocomplete-loading { background: white url('images/ui-anim_basic_16x16.gif') right center no-repeat; }
     </style>
 <script type="text/javascript" language="javascript">
@@ -69,109 +73,120 @@ $("input#company_name").on("keydown.autocomplete", function() {
  <div id="container">
         <h2>Advance Report</h2>	
 		<?php echo '<ul><h4>'.$msg.'</h4></ul>'; ?>
-		<form action="report_advance.php" id="report_form" class="wufoo leftLabel page1"  name="addnewdesignation" enctype="multipart/form-data" method="post" onSubmit="" >
-		<table width="100%">
-            	<tr>
-            		<td>Date Type</td>
-            		<td>
-            			<select name="date_type" id="date_type">
-            				<option value="booking_wise" <?php if(isset($_POST['date_type'])){if($_POST['date_type'] == 'booking_wise'){echo 'selected';}} ?>>Entry Date</option>
-            				<option value="allotment_wise" <?php if(isset($_POST['date_type'])){if($_POST['date_type'] == 'allotment_wise'){echo 'selected';}} ?>>Booking Date</option>
-            			</select>
-            		</td>
-            		<td>Date From :</td>
-                    <td>
-                    <span> 
-                    <script type="text/javascript" language="javascript">
-                    document.writeln(DateInput('allot_from', "report_form", false, 'YYYY-MM-DD', '<?php if(isset($_POST['allot_from'])){echo $_POST['allot_from'];}else{echo date("Y-m-d");}?>', 1));
-                    </script>
-                    </span>
-	                </td>
-	                <td>Date To :</td>
-	                <td>
-                    <span> 
-                    <script type="text/javascript" language="javascript">
-                    document.writeln(DateInput('allot_to', "report_form", false, 'YYYY-MM-DD', '<?php if(isset($_POST['allot_to'])){echo $_POST['allot_to'];}else{echo date("Y-m-d");}?>', 4));
-                    </script>
-                    </span>
-                    </td>
-                </tr>
-                <tr>
-                	<td>Guest Name</td>
-                	<td>
-                		<input type="text" name="cust_name" id="cust_name" value="<?php if(isset($_POST['cust_name'])){echo $_POST['cust_name'];}?>">
-                		<input type="hidden" name="cust_sno" id="cust_sno" value="<?php if(isset($_POST['cust_sno'])){echo $_POST['cust_sno'];}?>">
-                	</td>
-                	<!-- <td>Company Name</td>
-                	<td><input type="text" name="company_name" id="company_name" value="<?php if(isset($_POST['company_name'])){echo $_POST['company_name'];}?>"></td> -->
-                	<td>Room Category</td>
-					<td>
-					<select id="cat" name="cat[]" class="field select medium" onchange="fetchRemainingRooms(this)">
-                <option value="">-- Select Room Category --</option>
-                <?php
-                // Fetch categories from the database
-                $query = "SELECT sno, room_type FROM category";
-                $result = execute_query($query);
+		<form action="report_advance.php" id="report_form" class="wufoo leftLabel page1"  
+      name="addnewdesignation" enctype="multipart/form-data" method="post">
 
-                while ($row = mysqli_fetch_assoc($result)) {
-                    $roomsno = htmlspecialchars($row['sno']); // Category ID
-                    $roomType = htmlspecialchars($row['room_type']); // Room Type
-                    echo "<option value='$roomsno'>$roomType</option>";
-                }
-                ?>
-            </select></td>	
-					</td>
-					<td>Type</td>
-                	<td>
-                		<select name="type" id="type">
-                			<option value="">-All-</option>
-                			<option value="room_rent" <?php if(isset($_POST['type'])){if($_POST['type'] == 'room_rent'){echo 'selected';}} ?>>Room Booking</option>
-                			<option value="banquet_rent" <?php if(isset($_POST['type'])){if($_POST['type'] == 'banquet_rent'){echo 'selected';}} ?>>Banquet Booking</option>
-                		</select>
-                	</td>
-                </tr>
-                <tr>
-                	<td>Mode Of Payment</td>
-                	<td>
-                		<select name="mop" id="mop">
-                			<option value="">-All-</option>
-                			<option value="cash" <?php if(isset($_POST['mop'])){if($_POST['mop'] == 'cash'){ ?> selected="selected"<?php }} ?>>Cash</option>
-						   	<option value="card" <?php if(isset($_POST['mop'])){if($_POST['mop'] == 'card'){ ?> selected="selected"<?php }} ?>>Card</option>
-						   	<option value="other" <?php if(isset($_POST['mop'])){if($_POST['mop'] == 'other'){ ?> selected="selected"<?php }} ?>>Other</option>
-						   	<option value="bank_transfer" <?php if(isset($_POST['mop'])){if($_POST['mop'] == 'bank_transfer'){ ?> selected="selected"<?php }} ?>>Bank Transfer</option>
-						   	<option value="cheque" <?php if(isset($_POST['mop'])){if($_POST['mop'] == 'cheque'){ ?> selected="selected"<?php }} ?>>Cheque</option>
-						   	<option value="paytm" <?php if(isset($_POST['mop'])){if($_POST['mop'] == 'paytm'){ ?> selected="selected"<?php }} ?>>Paytm</option>
-						   	<option value="card_sbi" <?php if(isset($_POST['mop'])){if($_POST['mop'] == 'card_sbi'){ ?> selected="selected"<?php }} ?>>Card S.B.I</option>
-						   	<option value="card_pnb" <?php if(isset($_POST['mop'])){if($_POST['mop'] == 'cheque'){ ?> selected="selected"<?php }} ?>>Card P.N.B.</option>
-                		</select>
-                	</td>
-                	<td>Status</td>
-                	<td>
-                		<select name="status" id="status">
-                			<option value="">-All-</option>
-                			<option value="1" <?php if(isset($_POST['status'])){if($_POST['status'] == '1'){echo 'selected';}} ?>>BOOKED</option>
-                			<option value="0" <?php if(isset($_POST['status'])){if($_POST['status'] == '0'){echo 'selected';}} ?>>NON BOOKED</option>
-                		</select>
-                	</td>
-                	<td>Cancel Status</td>
-                	<td>
-                		<select name="cancel_status" id="cancel_status">
-                			<option value="">-All-</option>
-                			<option value="ADVANCE_AMT_CANCEL" <?php if(isset($_POST['cancel_status'])){if($_POST['cancel_status'] == 'ADVANCE_AMT_CANCEL'){echo 'selected';}} ?>>Canceled</option>
-                			<option value="ADVANCE_AMT" <?php if(isset($_POST['cancel_status'])){if($_POST['cancel_status'] == 'ADVANCE_AMT'){echo 'selected';}} ?>>Not-Canceled</option>
-                		</select>
-                	</td>
-                </tr>
-            	<tr class="no-print">
-                	<th colspan="3">
-                    	<input type="submit" name="submit_form" value="Search with Filters" class="btTxt submit">
-                    </th>
-                    <th colspan="3">
-                    	<input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
-                    </th>
-                </tr>
-            </table>	
-		</form>
+    <table width="100%">
+        <tr>
+            <td>Date Type</td>
+            <td>
+                <select name="date_type" id="date_type">
+                    <option value="booking_wise" <?php if(isset($_POST['date_type']) && $_POST['date_type'] == 'booking_wise') echo 'selected'; ?>>Entry Date</option>
+                    <option value="allotment_wise" <?php if(isset($_POST['date_type']) && $_POST['date_type'] == 'allotment_wise') echo 'selected'; ?>>Booking Date</option>
+                </select>
+            </td>
+            <td>Date From :</td>
+            <td>
+                <span> 
+                    <script type="text/javascript" language="javascript">
+                    document.writeln(DateInput('allot_from', "report_form", false, 'YYYY-MM-DD', '<?php echo isset($_POST['allot_from']) ? $_POST['allot_from'] : date("Y-m-d"); ?>', 1));
+                    </script>
+                </span>
+            </td>
+            <td>Date To :</td>
+            <td>
+                <span> 
+                    <script type="text/javascript" language="javascript">
+                    document.writeln(DateInput('allot_to', "report_form", false, 'YYYY-MM-DD', '<?php echo isset($_POST['allot_to']) ? $_POST['allot_to'] : date("Y-m-d"); ?>', 4));
+                    </script>
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Guest Name</td>
+            <td>
+                <input type="text" name="cust_name" id="cust_name" value="<?php echo isset($_POST['cust_name']) ? htmlspecialchars($_POST['cust_name']) : ''; ?>">
+                <input type="hidden" name="cust_sno" id="cust_sno" value="<?php echo isset($_POST['cust_sno']) ? htmlspecialchars($_POST['cust_sno']) : ''; ?>">
+            </td>
+
+            <td>Room Category</td>
+            <td>
+                <select id="cat" name="cat[]" class="field select medium" onchange="fetchRemainingRooms(this)">
+                    <option value="">-- Select Room Category --</option>
+                    <?php
+                    // Fetch categories from the database
+                    $query = "SELECT sno, room_type FROM category";
+                    $result = execute_query($query);
+
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $roomsno = htmlspecialchars($row['sno']); // Category ID
+                        $roomType = htmlspecialchars($row['room_type']); // Room Type
+                        $selected = (isset($_POST['cat']) && in_array($roomsno, $_POST['cat'])) ? 'selected' : '';
+                        echo "<option value='$roomsno' $selected>$roomType</option>";
+                    }
+                    ?>
+                </select>
+            </td>
+
+            <td>Type</td>
+            <td>
+                <select name="type" id="type">
+                    <option value="">-All-</option>
+                    <option value="room_rent" <?php if(isset($_POST['type']) && $_POST['type'] == 'room_rent') echo 'selected'; ?>>Room Booking</option>
+                    <option value="banquet_rent" <?php if(isset($_POST['type']) && $_POST['type'] == 'banquet_rent') echo 'selected'; ?>>Banquet Booking</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Mode Of Payment</td>
+            <td>
+                <select name="mop" id="mop">
+                    <option value="">-All-</option>
+                    <option value="cash" <?php if(isset($_POST['mop']) && $_POST['mop'] == 'cash') echo 'selected'; ?>>Cash</option>
+                    <option value="card" <?php if(isset($_POST['mop']) && $_POST['mop'] == 'card') echo 'selected'; ?>>Card</option>
+                    <option value="other" <?php if(isset($_POST['mop']) && $_POST['mop'] == 'other') echo 'selected'; ?>>Other</option>
+                    <option value="bank_transfer" <?php if(isset($_POST['mop']) && $_POST['mop'] == 'bank_transfer') echo 'selected'; ?>>Bank Transfer</option>
+                    <option value="cheque" <?php if(isset($_POST['mop']) && $_POST['mop'] == 'cheque') echo 'selected'; ?>>Cheque</option>
+                    <option value="paytm" <?php if(isset($_POST['mop']) && $_POST['mop'] == 'paytm') echo 'selected'; ?>>Paytm</option>
+                    <option value="card_sbi" <?php if(isset($_POST['mop']) && $_POST['mop'] == 'card_sbi') echo 'selected'; ?>>Card S.B.I</option>
+                    <option value="card_pnb" <?php if(isset($_POST['mop']) && $_POST['mop'] == 'card_pnb') echo 'selected'; ?>>Card P.N.B.</option>
+                </select>
+            </td>
+
+            <td>Status</td>
+            <td>
+                <select name="status" id="status">
+                    <option value="">-All-</option>
+                    <option value="1" <?php if(isset($_POST['status']) && $_POST['status'] == '1') echo 'selected'; ?>>BOOKED</option>
+                    <option value="0" <?php if(isset($_POST['status']) && $_POST['status'] == '0') echo 'selected'; ?>>NON BOOKED</option>
+                </select>
+            </td>
+
+            <td>Cancel Status</td>
+            <td>
+                <select name="cancel_status" id="cancel_status">
+                    <option value="">-All-</option>
+                    <option value="ADVANCE_AMT_CANCEL" <?php if(isset($_POST['cancel_status']) && $_POST['cancel_status'] == 'ADVANCE_AMT_CANCEL') echo 'selected'; ?>>Canceled</option>
+                    <option value="ADVANCE_AMT" <?php if(isset($_POST['cancel_status']) && $_POST['cancel_status'] == 'ADVANCE_AMT') echo 'selected'; ?>>Not-Canceled</option>
+                </select>
+            </td>
+        </tr>
+
+        <tr class="no-print">
+            <th colspan="2">
+                <input type="submit" name="submit_form" value="Search with Filters" class="btTxt submit">
+            </th>
+            <th colspan="2">
+                <input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
+            </th>
+            <th colspan="2">
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
+        </tr>
+    </table>    
+</form>
 			<table width="100%" class="table table-bordered">
 				<tr>
 					<th  style="background:#00888d; color:#FFF;">S.No.</th>
@@ -369,12 +384,12 @@ $("input#company_name").on("keydown.autocomplete", function() {
 						echo '<td class="no-print">Booked</td>';
 					}
 					if($row['status'] == 0 AND $row_mop['type'] == 'ADVANCE_AMT'){
-					echo '<td class="no-print"><a href="advance_booking.php?e_id='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Edit</a></td>';
+					echo '<td class="no-print"><a href="advance_booking.php?e_id='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-edit"></i></a></td>';
 					}
 					else{
 						echo '<td class="no-print"></td>';
 					}
-					echo '<td class="no-print"><a href="advance_print.php?print_id='.$row['sno'].'"  target="_blank">View</a></td>';
+					echo '<td class="no-print"><a href="advance_print.php?print_id='.$row['sno'].'"  target="_blank"><i class="fas fa-eye"></i></a></td>';
 					if($row['status'] == 0 AND $row_mop['type'] == 'ADVANCE_AMT'){
 					echo '<td class="no-print"><a href="report_advance.php?cancel_id='.$row_mop['sno'].'" onclick="return confirm(\'Are you sure?\');">Cancel</a></td>';
 					}
@@ -500,6 +515,24 @@ function edit_amount(id){
 
 }
 </script>
+
+
+
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    
+    var form = document.getElementById('report_form');
+    form.action = 'report_advance_export.php'; // Change form action to export page
+    form.submit();
+
+    // Optionally reset action to original if needed later
+    // setTimeout(() => form.action = 'report_advance.php', 1000);
+
+    return false;
+}
+</script>
+
 <?php
 navigation('');
 page_footer();

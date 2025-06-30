@@ -76,7 +76,7 @@ if(isset($_POST['submit'])){
 			$result = execute_query($sql1);
 			$sql='update allotment set exit_date="'.$_POST['exit_date'].'", invoice_no="'.$_POST['invoice_no'].'" , `bill_create_date`="'.date('Y-m-d H:i:s').'" , `res_bill_print`="'.$res_bill_print.'" where sno='.$row['sno'];
 			$result = execute_query($sql);
-			$sql='update room_master set status=0 where sno='.$row['room_id'];
+			$sql='update room_master set status=2 where sno='.$row['room_id'];
 			$result = execute_query($sql);
 			$sql='update customer set destination="'.$_POST['destination'].'" , check_out_time="'.$_POST['exit_date'].'" where sno='.$_POST['cust_id'];
 			$result = execute_query($sql);
@@ -390,7 +390,7 @@ function update_rent(){
 }
 </script>
  <div id="container">
-        <h2>Vacate Room</h2>	
+        <h2>CHECK-OUT</h2>	
 		<?php echo '<ul><h4>'.$msg.'</h4></ul>'; ?>
 		<form action="vacant_room.php" class="wufoo leftLabel page1"  name="addnewdesignation" enctype="multipart/form-data" method="post" onSubmit="" >
 			<input type="hidden" name="check_res"  id="check_res" value="0">

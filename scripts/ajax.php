@@ -39,46 +39,58 @@ if($_GET['id']=='category'){
 		echo $row['rent'];	
 	}
 }
-if($_GET['id']=='cust_name'){
-	if(!isset($_GET['exit_date'])){
-		$_GET['exit_date'] = date("Y-m-d H:i:s");
-	}
-	$final=array();
-	$rooms=array();
-	$sql='select customer.sno as sno, allotment.sno as allot_id, advance_booking_id , allotment.hold_date as hold_date , cust_name , company_name , mobile, room_id, room_rent , original_room_rent , taxable_amount , other_charges , allotment_date, cust_id, guest_name , count(*) as count from allotment left join customer on customer.sno = allotment.cust_id where (exit_date is null or exit_date = "") and (cust_name like "%'.$q.'%" or company_name like "%'.$q.'%") group by cust_id';
-	$result = execute_query($sql);
-	$result = execute_query($sql);
-    while($row = mysqli_fetch_array($result)){
-		$res_allot=array();
-		if($row['count']>1){
-			$sql='select * from allotment where cust_id='.$row['sno'].' and (exit_date is null or exit_date = "")';
-			$result = execute_query($sql);
-			while($row = mysqli_fetch_array($result)){
-				$balance = check_pendency($allotment['room_rent'], $allotment['allotment_date'], $allotment['cust_id'], $_GET['exit_date'], $allotment['sno']);
-				$res_allot[] = $allotment['sno'];
-				$day1=get_days($row['allotment_date'], $_GET['exit_date']);
-				$sql1='select * from room_master where sno='.$allotment['room_id'];
-				$result1 = execute_query($sql1);						
-				$extra=0;
-				while($row = mysqli_fetch_array($result1)){
-					if($allotment['other_charges'] == NULL)
-					{
-						$extra=0;
-					}
-					else{
-						$extra=$allotment['other_charges'];
-					}
-					$hold = '';
-					if($row['hold_date'] == ''){
-						$hold = '';
-					}
-					else{
-						$hold = '<span style="color:red;font-size:18px;"><b>Hold</b></span>';
-					}
-					array_push($rooms, array("hold"=>$hold , "customer_id"=>$row['sno'], "room_id"=>$room['sno'], "label"=>$room['room_name'], "allotment_id"=>$allotment['sno'], "balance"=>$balance, "extra_bed"=>$extra, "tax_rent"=>$allotment['taxable_amount'] * $day1, "org_rent"=>$allotment['original_room_rent'] * $day1,"org"=>$row['original_room_rent']+$extra , "guest_name"=>$allotment['guest_name']));
-				}
-			}
-		}
+if ($_GET['id'] == 'cust_name') {
+    if (!isset($_GET['exit_date'])) {
+        $_GET['exit_date'] = date("Y-m-d H:i:s");
+    }
+
+    $q = isset($_GET['q']) ? mysqli_real_escape_string($conn, $_GET['q']) : '';
+    $final = [];
+    $rooms = [];
+
+    $sql = "SELECT customer.sno AS sno, allotment.sno AS allot_id, advance_booking_id , allotment.hold_date as hold_date , cust_name , company_name , mobile, room_id, room_rent , original_room_rent , taxable_amount , other_charges , allotment_date, cust_id, guest_name , count(*) as count 
+FROM allotment 
+LEFT JOIN customer ON customer.sno = allotment.cust_id 
+WHERE (exit_date IS NULL OR exit_date = '') 
+AND (cust_name LIKE '%$q%' OR company_name LIKE '%$q%') 
+GROUP BY cust_id";
+    $result = execute_query($sql);
+
+    while ($row = mysqli_fetch_array($result)) {
+        $res_allot = [];
+
+        if ($row['count'] > 1) {
+            $sql_multi = "SELECT * FROM allotment WHERE cust_id = {$row['sno']} AND (exit_date IS NULL OR exit_date = '')";
+            $result_multi = execute_query($sql_multi);
+
+            while ($row_allot = mysqli_fetch_array($result_multi)) {
+                $balance = check_pendency($row_allot['room_rent'], $row_allot['allotment_date'], $row_allot['cust_id'], $_GET['exit_date'], $row_allot['sno']);
+                $res_allot[] = $row_allot['sno'];
+
+                $day1 = get_days($row_allot['allotment_date'], $_GET['exit_date']);
+                $extra = $row_allot['other_charges'] ?? 0;
+
+                $sql1 = 'SELECT * FROM room_master WHERE sno = ' . intval($row_allot['room_id']);
+                $result1 = execute_query($sql1);
+                $room = mysqli_fetch_assoc($result1);
+
+                $hold = ($row_allot['hold_date'] == '') ? '' : '<span style="color:red;font-size:18px;"><b>Hold</b></span>';
+
+                array_push($rooms, [
+                    "hold" => $hold,
+                    "customer_id" => $row_allot['cust_id'],
+                    "room_id" => $room['sno'],
+                    "label" => $room['room_name'],
+                    "allotment_id" => $row_allot['sno'],
+                    "balance" => $balance,
+                    "extra_bed" => $extra,
+                    "tax_rent" => floatval($row_allot['taxable_amount']) * $day1,
+                    "org_rent" => floatval($row_allot['original_room_rent']) * $day1,
+                    "org" => floatval($row_allot['original_room_rent']) + floatval($extra),
+                    "guest_name" => $row_allot['guest_name']
+                ]);
+            }
+        }
 		else{
 			if($row['other_charges'] == NULL)
 			{
@@ -104,7 +116,7 @@ if($_GET['id']=='cust_name'){
 			else{
 				$hold = '<span style="color:red;font-size:18px;"><b>Hold</b></span>';
 			}
-			array_push($rooms, array("hold"=>$hold , "customer_id"=>$row['sno'], "room_id"=>$room['sno'], "label"=>$room['room_name'], "allotment_id"=>$row['allot_id'], "balance"=>$balance,"extra_bed"=>$extra,"tax_rent"=>$row['taxable_amount'] * $day1,"org_rent"=>$row['original_room_rent'] * $day1,"org"=>$row['original_room_rent']+$extra , "guest_name"=>$row['guest_name']));
+			array_push($rooms, array("hold"=>$hold , "customer_id"=>$row['sno'], "room_id"=>$room['sno'], "label"=>$room['room_name'], "allotment_id"=>$row['allot_id'], "balance"=>$balance,"extra_bed"=>$extra,"tax_rent"=>floatval($row['taxable_amount']) * $day1,"org_rent"=>floatval($row['original_room_rent']) * $day1,"org"=>floatval($row['original_room_rent'])+$extra , "guest_name"=>$row['guest_name']));
 		}
 		$allot=$row['allotment_date'];
 		$allot=date('Y-m-d',strtotime($allot));
@@ -234,8 +246,6 @@ if($_GET['id']=='room_number'){
 	}
 
 }
-
-
 
 if($_GET['id']=='room'){
 	if(!$_GET['exit_date']){

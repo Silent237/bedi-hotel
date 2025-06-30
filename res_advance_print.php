@@ -107,16 +107,16 @@ $style = 'thermal';
 							</h5></th>
 					</tr>
 					<tr>
-						<th colspan="3"><h4 class="fontsize">BEDI'S DREAM LAND HOTEL AND RESORT</h4></th>
+						<th colspan="3"><h4 class="fontsize"><?php echo $company; ?></h4></th>
 					</tr>
 					<tr>
-						<th colspan="3"><h6 class="fontsize">Maheshpur, Near Saryu Bridge<br>Ayodhya-224001 (U.P)</h6></th>
+						<th colspan="3"><h6 class="fontsize"><?php echo $address; ?></h6></th>
 					</tr>
 					<tr>
-						<th colspan="3"><h6 class="fontsize"></h6>Mob No :+91 8989441919, +91 8400334035/34 <br> E-Mail : bedisdreamland@gmail.com , Website: www.bedisdreamland.com</h6></th>
+						<th colspan="3"><h6 class="fontsize"></h6><?php echo $contact; ?> <br> E-Mail : <?php echo $email; ?> , Website: <?php echo $web; ?></h6></th>
 					</tr>
 					<tr class="fontsize">
-						<th><center></center><h6>GSTIN : 09AAOFB3645G1ZA</h6></center></th>
+						<th><center></center><h6>GSTIN : <?php echo $gstin; ?></h6></center></th>
 					</tr>
 				</table>
 	

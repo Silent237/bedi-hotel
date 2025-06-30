@@ -15,9 +15,13 @@ $sql = 'select * from general_settings where `desc`="company"';
 $company = mysqli_fetch_assoc(execute_query($sql));
 $company = $company['rate'];
 
-$sql = 'select * from general_settings where `desc`="slogan"';
-$slogan = mysqli_fetch_assoc(execute_query($sql));
-$slogan = $slogan['rate'];
+$sql = 'select * from general_settings where `desc`="email"';
+$email = mysqli_fetch_assoc(execute_query($sql));
+$email = $email['rate'];
+
+$sql = 'select * from general_settings where `desc`="website"';
+$web = mysqli_fetch_assoc(execute_query($sql));
+$web = $web['rate'];
 
 $sql = 'select * from general_settings where `desc`="dealer"';
 $dealer = mysqli_fetch_assoc(execute_query($sql));
@@ -856,25 +860,21 @@ if(isset($_GET['style'])){
 				<center><p style="font-size:14px; text-decoration: underline;"><?php if($invoice['invoice_type']=='SALE'){echo "INVOICE";}elseif($invoice['invoice_type']=='TAX'){echo "INVOICE";}else{echo "";}?></p></center>
 				<div id="company">
 					<div id="company" style="margin-top:10px">
-					<div id="logo"><h1 style="font-size:20px;letter-spacing:3px">WEKNOW TECHNOLOGIES</h1></div>
+					<div id="logo"><h1 style="font-size:20px;letter-spacing:3px"><?php echo $company; ?></h1></div>
 				</div>
-				<div id="address" style="margin-top:15px">
-				<p style="font-size:12px;letter-spacing: 1px">WEKNOW TECHNOLOGIES PRIVATE LIMITED</p>
+				
+			<div id="address" style="margin-top:10px">
+				<p style="font-size:15px;letter-spacing: 1px"><?php echo $address; ?></p>
+			</div>
+			
+			<div id="address" style="margin-top:10px">
+				<p style="font-size:15px;letter-spacing: 1px"><?php echo $contact; ?></p>
 			</div>
 			<div id="address" style="margin-top:10px">
-				<p style="font-size:15px;letter-spacing: 1px"> Civil Lines, Ayodhya (Faizabad)</p>
+				<p style="font-size:15px;letter-spacing: 1px">E-Mail : <?php echo $email; ?></p>
 			</div>
 			<div id="address" style="margin-top:10px">
-				<p style="font-size:15px;letter-spacing: 1px">Pincode - 224001</p>
-			</div>
-			<div id="address" style="margin-top:10px">
-				<p style="font-size:15px;letter-spacing: 1px">05278- 223586, 9455096925</p>
-			</div>
-			<div id="address" style="margin-top:10px">
-				<p style="font-size:15px;letter-spacing: 1px">E-Mail : shane_avadh@yahoo.com</p>
-			</div>
-			<div id="address" style="margin-top:10px">
-				<p style="font-size:15px;letter-spacing: 1px">www.hotelshaneavadh.in</p>
+				<p style="font-size:15px;letter-spacing: 1px"><?php echo $web; ?></p>
 			</div>
 			<div id="address" style="margin-top:10px">
 				<p style="font-size:15px;letter-spacing: 1px"><?php

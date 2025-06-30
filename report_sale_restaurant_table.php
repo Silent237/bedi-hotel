@@ -301,7 +301,7 @@ function edit_mode_of_payment(id){
                     <th>
                     	<input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
                     </th>
-                    <th colspan="2">
+                    <th >
                     	<?php
 						if(isset($_SESSION['sale_agent'])){
 							if($_SESSION['sale_agent']!=''){
@@ -314,6 +314,9 @@ function edit_mode_of_payment(id){
 						}
 						?>
                     </th>
+					<th >
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
                 </tr>
             </table>
 		</form>
@@ -631,4 +634,13 @@ $(function () {
 		$(this).html(txt);
 	});
 });
+</script>
+	<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('purchase_report');
+    form.action = 'restable_report_export.php';
+    form.submit();
+    return false;
+}
 </script>

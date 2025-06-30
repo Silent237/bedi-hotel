@@ -179,8 +179,8 @@ $("input#cust_name").on("keydown.autocomplete", function() {
 					echo '
 					<td>'.$row['amount'].'</td>
 					<td>'.$row['timestamp'].'</td>
-					<td class="no-print"><a href="receipts.php?id='.$row['sno'].'">Edit</a></td>
-					<td class="no-print"><a href="report_receipt.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');">Delete</a></td>
+					<td class="no-print"><a href="receipts.php?id='.$row['sno'].'"><i class="fas fa-edit"></i></a></td>
+					<td class="no-print"><a href="report_receipt.php?del='.$row['sno'].'" onclick="return confirm(\'Are you sure?\');"><i class="fas fa-trash-alt" style="color:red;"></i></a></td>
 					</tr>';
 				}
 				echo '<tr><th colspan="9">Total :</th><th>'.$tot.'</th><th colspan="3">&nbsp;</th></tr>';

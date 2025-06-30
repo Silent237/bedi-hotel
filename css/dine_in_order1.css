@@ -54,7 +54,7 @@
 #search_box{
 	width: 98%;
 	background: #cccccc;
-	font-size: 18px;
+	font-size: 14px;
 	padding: 5px;
 	margin-bottom: 10px;
 }
@@ -70,12 +70,7 @@
 	height: 300px;
 }
 
-#div_button{
-	width: 99%;
-	float: left;
-	border: 2px solid blue;
-	margin-left: 1px;
-}
+
 
 #div_button button{
 	background-color:#cccccc;
@@ -96,6 +91,8 @@
 	height: 480px;
 	float:left;
 	width: 100%;
+	display: flex;
+    flex-wrap: wrap;
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
@@ -103,43 +100,107 @@
     opacity: 1;
 }
 
-#category_item button{
-	height:100px;
-	width:125px;
-	margin: 5px;
-	border-radius: 20px;
-	font-size:12px;
-	padding: 5px;
+#category_item button {
+  height: 100px;
+  width: 125px;
+  margin: 8px;
+  border-radius: 20px;
+  font-size: 12px;
+  padding: 10px;
+  background: linear-gradient(135deg, #cce5ff, #e6f7ff);
+  color: #003366;
+  border: none;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
+#category_item button:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+
+
 #item_container{
-	margin: 10px;
+	margin: 10px 5px;
 	display:inline-block;
 	cursor: pointer;
 }
-#item_list #item_container div{
-	height:50px;
-	width:100px;
-	margin-left: 5px;
-	border-radius: 5px;
-	background: #eee;
-	text-align: center;
-	display: table-cell;
-	border: 0px solid;
-	vertical-align: middle;
-	font-size: 11px;
-	box-shadow: 2px 1px;
+#item_list #item_container div {
+  height: 50px;
+  width: 100px;
+  margin-left: 8px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #cce5ff, #e6f7ff);
+  color: #003366;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
+
+#item_list #item_container div:hover {
+  transform: scale(1.05);
+  box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+}
+
 
 #item_list #item_container div:active{background: #FFD600;}
 
-#item_list button{
-	height:50px;
-	width:100px;
-	margin-left: 10px;
-	border-radius: 5px;
-	font-size:12px;
+
+
+#div_button {
+  width: 99%;
+  float: left;
+  border: 2px solid #007BFF; /* Bootstrap primary blue */
+  border-radius: 10px;
+  margin-left: 1px;
+  padding: 5px 10px;
+  background: #f8f9fa; /* light background */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
+
+#item_list button {
+  height: 50px;
+  width: 110px;
+  margin: 6px 5px 6px 0;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  background: linear-gradient(135deg, #007bff, #00c6ff);
+  border: none;
+  box-shadow: 0 3px 6px rgba(0, 123, 255, 0.4);
+  transition: all 0.2s ease-in-out;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-align: center;
+}
+
+#item_list button:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #0056b3, #00aaff);
+  box-shadow: 0 5px 12px rgba(0, 123, 255, 0.5);
+  cursor: pointer;
+}
+
 
 
 #nav{

@@ -47,12 +47,15 @@ $("input#cust_name1").on("keydown.autocomplete", function() {
                 
                 	<td>Summary Date</td>
                     <td><input name="allotment_date" type="text" value="<?php if(isset($_POST['allotment_date'])){echo $_POST['allotment_date'];}else{echo date("Y-m-d H:i:s");}?>" class="field text medium" tabindex="<?php echo $tab++;?>" id="allotment_date" /></td>
-                    <td colspan="2">
+                    <td >
                     	<input type="submit" name="submit_form" value="Search with Filters" class="btTxt submit">
                     </td>
-                    <td colspan="2">
+                    <td >
                     	<input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
                     </td>
+					<td >
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </td>
                 </tr>
                 <!--<tr class="no-print">
                 		<th>Guest Name</th>
@@ -243,4 +246,13 @@ $('#allotment_date').datetimepicker({
 	}
 	?>',
 	});
+</script>
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('report_allotment');
+    form.action = 'checkin_report_daily_export.php';
+    form.submit();
+    return false;
+}
 </script>

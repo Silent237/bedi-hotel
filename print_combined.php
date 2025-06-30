@@ -6,6 +6,30 @@ logvalidate('','');
 
 $colspan=5;
 
+$sql = 'select * from general_settings where `desc`="company"';
+$company = mysqli_fetch_assoc(execute_query($sql));
+$company = $company['rate'];
+
+$sql = 'select * from general_settings where `desc`="address"';
+$address = mysqli_fetch_assoc(execute_query($sql));
+$address = $address['rate'];
+
+$sql = 'select * from general_settings where `desc`="contact"';
+$contact = mysqli_fetch_assoc(execute_query($sql));
+$contact = $contact['rate'];
+
+$sql = 'select * from general_settings where `desc`="email"';
+$email = mysqli_fetch_assoc(execute_query($sql));
+$email = $email['rate'];
+
+$sql = 'select * from general_settings where `desc`="website"';
+$web = mysqli_fetch_assoc(execute_query($sql));
+$web = $web['rate'];
+
+$sql = 'select * from general_settings where `desc`="gstin"';
+$gstin = mysqli_fetch_assoc(execute_query($sql));
+$gstin = $gstin['rate'];
+
 $sql = 'select * from general_settings where `desc`="state"';
 $state = mysqli_fetch_assoc(execute_query($sql));
 
@@ -74,24 +98,21 @@ h3{ font-size:16px;}
 				<?php } ?></h3></th>
 		</tr>
 		<tr>
-			<th colspan="3"><h2>BEDI'S DREAM LAND HOTEL AND RESORT</h2></th>
+			<th colspan="3"><h2><?php echo $company; ?></h2></th>
 		</tr>
 		</tr>
 		<tr>
-			<th colspan="3"><h2>Maheshpur, Near Saryu Bridge </h2></th>
+			<th colspan="3"><h2><?php echo $address; ?></h2></th>
+		</tr>
+		
+		<tr>
+			<th colspan="3"><h3><?php echo $contact; ?></h3></th>
 		</tr>
 		<tr>
-			<th colspan="3"><h3>Ayodhya-224001 (U.P)</h3></th>
-		</tr>
-
-		<tr>
-			<th colspan="3"><h3>Contact No : +91 8989441919, +91 8400334035/34</h3></th>
+			<th colspan="3"><h3>E-Mail : <?php echo $email; ?>, Website: <?php echo $web; ?></h3></th>
 		</tr>
 		<tr>
-			<th colspan="3"><h3>E-Mail : bedisdreamland@gmail.com, Website: www.bedisdreamland.com</h3></th>
-		</tr>
-		<tr>
-			<th><center></center><h3>GSTIN :09AAOFB3645G1ZA</h3></center></th>
+			<th><center></center><h3>GSTIN :<?php echo $gstin; ?></h3></center></th>
 		</tr>
 	</table>
 </div>

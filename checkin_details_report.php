@@ -99,8 +99,12 @@ $("input#cust_name1").on("keydown.autocomplete", function() {
                     <th colspan="2">
                     	<input type="submit" name="reset_form" value="Reset Filters" class="btTxt submit">
                     </th>
+                   <th colspan="2">
+                <input type="submit" name="download_excel" value="Download in Excel" class="btTxt submit btn-danger" onclick="return submitExportExcel(event);">
+            </th>
                 </tr>
         </table>
+		</form>
         <table width="100%">
 			<tr style="background:#000; color:#FFF;">
 				<th>S.No.</th>
@@ -216,5 +220,14 @@ $("input#cust_name1").on("keydown.autocomplete", function() {
 			echo '<tr><th colspan="6">Total :</th><th>'.$night.'</th><th>'.$grand_total_rent.'</th><th>'.$grand_room_serive.'</th><th>'.$grand_advance.'</th><th>'.$grand.'</th></tr>';
 		?>
 		</table>
-    </form>
+    
 </div>
+<script>
+function submitExportExcel(event) {
+    event.preventDefault(); // Stop normal submit
+    var form = document.getElementById('report_allotment');
+    form.action = 'checkin_details_report_export.php';
+    form.submit();
+    return false;
+}
+</script>
